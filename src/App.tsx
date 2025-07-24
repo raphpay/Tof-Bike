@@ -2,6 +2,7 @@ import Footer from "./ui/components/Footer";
 import NavBar from "./ui/components/NavBar";
 import Section from "./ui/components/Section";
 import HeroSection from "./ui/section/HeroSection";
+import RentalSection from "./ui/section/RentalSection";
 import ShopSection from "./ui/section/ShopSection";
 
 export default function App() {
@@ -26,6 +27,8 @@ export default function App() {
               <HeroSection />
             ) : section.key === "shop" ? (
               <ShopSection />
+            ) : section.key === "rental" ? (
+              <RentalSection />
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center">
                 <h1 className="mb-4 text-4xl font-extrabold text-gray-900 md:text-6xl">
