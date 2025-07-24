@@ -1,3 +1,41 @@
 @import "tailwindcss";
 /*@import "tailwindcss/preflight"; */
 @tailwind utilities;
+
+@theme {
+  /* Primary */
+  --color-primary: #125e3b;
+  --color-primary-lighter: #cfded7;
+  --color-primary-light: #598e75;
+  --color-primary-dark: #0e4b2f;
+  --color-primary-darker: #072517;
+
+  /* Secondary */
+  --color-secondary: #25b138;
+  --color-secondary-lighter: #d3efd7;
+  --color-secondary-light: #66c873;
+  --color-secondary-dark: #1d8d2c;
+  --color-secondary-darker: #0e4616;
+
+  /* Tertiary */
+  --color-tertiary: #daecb6;
+  --color-tertiary-lighter: #f7fbf0;
+  --color-tertiary-light: #e5f1cb;
+  --color-tertiary-dark: #aebc91;
+  --color-tertiary-darker: #575e48;
+}
+
+.btn-primary {
+  border-radius: calc(infinity * 1px);
+  background-color: var(--color-primary);
+  padding-inline: --spacing(5);
+  padding-block: --spacing(2);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  box-shadow: var(--shadow-md);
+  &:hover {
+    @media (hover: hover) {
+      background-color: var(--color-primary-dark);
+    }
+  }
+}

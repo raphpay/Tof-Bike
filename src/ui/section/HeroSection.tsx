@@ -1,0 +1,32 @@
+import React from "react";
+import Hero from "../../assets/hero.jpg";
+
+// Styles
+const section = "relative flex flex-col h-full w-full bg-cover bg-center";
+const container = "relative z-10 flex flex-col justify-center h-screen mx-10";
+const overlay = "absolute inset-0 bg-black/60"; // Dark overlay
+const headline =
+  "mb-4 text-3xl leading-tight font-extrabold text-gray-200 md:text-5xl";
+const description = "text-md md:text-lg text-white";
+
+const HeroSection: React.FC = () => {
+  return (
+    <section className={section} style={{ backgroundImage: `url(${Hero})` }}>
+      {/* Overlay */}
+      <div className={overlay}></div>
+
+      {/* Content */}
+      <div className={container}>
+        <h1 className={headline}>Explorez Cilaos à vélo !</h1>
+        <p className={description}>
+          Découvrez les paysages grandioses du cirque de Cilaos en toute
+          liberté. Que vous soyez amateur de balades tranquilles ou passionné de
+          VTT, notre magasin vous propose une sélection de vélos à la vente et à
+          la location, adaptés à tous les niveaux.
+        </p>
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;

@@ -1,6 +1,7 @@
 import Footer from "./ui/components/Footer";
 import NavBar from "./ui/components/NavBar";
 import Section from "./ui/components/Section";
+import HeroSection from "./ui/section/HeroSection";
 
 export default function App() {
   const sections = [
@@ -15,19 +16,24 @@ export default function App() {
     <div>
       <NavBar />
       <div
-        className="h-screen w-full overflow-y-scroll scroll-smooth snap-y snap-mandatory"
+        className="h-screen w-full snap-y snap-mandatory overflow-y-scroll scroll-smooth"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         {sections.map((section) => (
           <Section key={section.key} id={section.key}>
-            <div className="flex flex-col items-center justify-center w-full h-full">
-              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4">
-                {section.label}
-              </h1>
-              <p className="text-lg text-gray-500">
-                Section de démonstration: {section.label}
-              </p>
-            </div>
+            {section.key === "home" ? (
+              <HeroSection />
+            ) : (
+              <div className="flex h-full w-full flex-col items-center justify-center">
+                <h1 className="mb-4 text-4xl font-extrabold text-gray-900 md:text-6xl">
+                  {section.label}
+                </h1>
+                <p className="text-lg text-gray-500">
+                  Section de démonstration: {section.label}
+                </p>
+                <button className="h-25 w-50 text-black"></button>
+              </div>
+            )}
           </Section>
         ))}
       </div>
