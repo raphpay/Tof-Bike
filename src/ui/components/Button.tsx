@@ -8,7 +8,8 @@ type ButtonProps = {
   className?: string;
 };
 
-const baseStyles = "px-6 py-3 font-semibold rounded-xl transition duration-300";
+const baseStyles =
+  "px-6 py-3 font-semibold rounded-xl transition duration-300 cursor-pointer";
 
 const Button: React.FC<ButtonProps> = ({
   title,

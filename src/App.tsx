@@ -2,6 +2,7 @@ import Footer from "./ui/components/Footer";
 import NavBar from "./ui/components/NavBar";
 import Section from "./ui/components/Section";
 import HeroSection from "./ui/section/HeroSection";
+import ShopSection from "./ui/section/ShopSection";
 
 export default function App() {
   const sections = [
@@ -23,6 +24,8 @@ export default function App() {
           <Section key={section.key} id={section.key}>
             {section.key === "home" ? (
               <HeroSection />
+            ) : section.key === "shop" ? (
+              <ShopSection />
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center">
                 <h1 className="mb-4 text-4xl font-extrabold text-gray-900 md:text-6xl">
