@@ -41,7 +41,7 @@ const NavBar = () => {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="fixed top-0 left-0 z-50 w-full border-b border-gray-200 bg-white/80 shadow-md backdrop-blur-md"
+      className="bg-primary fixed top-0 left-0 z-50 w-full border-b border-gray-200 shadow-md backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-6xl items-center px-4 py-2">
         {/* Logo and Brand */}

@@ -26,12 +26,12 @@ const HeroSection: React.FC = () => {
 
         <div className={buttonGroup}>
           <Button
-            title="Réserver maintenant"
+            title="Notre magasin"
             variant="primary"
             onClick={() => console.log("Réservation")}
           />
           <Button
-            title="En savoir plus"
+            title="Nos locations"
             variant="secondary"
             onClick={() => console.log("Plus d'infos")}
           />
