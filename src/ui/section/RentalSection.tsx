@@ -3,15 +3,14 @@ import React from "react";
 import Button from "../components/Button"; // Reuse your custom Button component
 
 const section =
-  "flex flex-col justify-center items-center text-center w-full h-screen bg-gray-100 px-6 py-12";
+  "flex flex-col justify-center items-center text-center w-full h-screen bg-background-light px-6 py-12";
 const title =
   "text-3xl md:text-5xl font-extrabold mb-4 text-gray-800 leading-tight";
 const description = "text-md md:text-lg mb-10 max-w-2xl text-gray-700";
 const featuresContainer =
   "grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 w-full max-w-5xl";
-const featureCard =
-  "flex flex-col items-center bg-white rounded-xl shadow p-6 transition hover:shadow-lg";
-const iconStyle = "w-10 h-10 text-blue-600 mb-4";
+const featureCard = "flex flex-col items-center p-6 transition";
+const iconStyle = "w-10 h-10 text-primary mb-4";
 const featureTitle = "text-lg font-semibold mb-2";
 const featureDescription = "text-sm text-gray-600";
 

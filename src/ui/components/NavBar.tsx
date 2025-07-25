@@ -7,7 +7,7 @@ const navItems = [
   { label: "Home", to: "home" },
   { label: "Magasin", to: "shop" },
   { label: "Location", to: "rental" },
-  { label: "Blog", to: "blog" },
+  { label: "Avis", to: "reviews" },
   { label: "Contact", to: "contact" },
 ];
 
