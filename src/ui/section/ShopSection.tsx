@@ -4,7 +4,7 @@ import ShopImage from "../../assets/shop.jpg";
 import Button from "../components/Button";
 
 const section =
-  "flex flex-col md:flex-row w-full h-screen bg-primary-light text-gray-800";
+  "flex flex-col md:flex-row w-full h-screen bg-background-dark text-gray-800";
 const left =
   "flex flex-col justify-center items-center text-left px-6 py-12 md:w-1/2";
 const right = "md:w-1/2 h-full bg-cover bg-center";

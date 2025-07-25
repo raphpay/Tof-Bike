@@ -23,6 +23,9 @@
   --color-tertiary-light: #e5f1cb;
   --color-tertiary-dark: #aebc91;
   --color-tertiary-darker: #575e48;
+
+  --color-background-dark: #598e75;
+  --color-background-light: #e9f7eb;
 }
 
 .btn-primary {
