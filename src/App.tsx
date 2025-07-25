@@ -3,6 +3,7 @@ import NavBar from "./ui/components/NavBar";
 import Section from "./ui/components/Section";
 import HeroSection from "./ui/section/HeroSection";
 import RentalSection from "./ui/section/RentalSection";
+import ReviewsSection from "./ui/section/ReviewsSection";
 import ShopSection from "./ui/section/ShopSection";
 
 export default function App() {
@@ -10,7 +11,7 @@ export default function App() {
     { key: "home", label: "Home" },
     { key: "shop", label: "Magasin" },
     { key: "rental", label: "Location" },
-    { key: "blog", label: "Blog" },
+    { key: "reviews", label: "Avis" },
     { key: "contact", label: "Contact" },
   ];
 
@@ -29,6 +30,8 @@ export default function App() {
               <ShopSection />
             ) : section.key === "rental" ? (
               <RentalSection />
+            ) : section.key === "reviews" ? (
+              <ReviewsSection />
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center">
                 <h1 className="mb-4 text-4xl font-extrabold text-gray-900 md:text-6xl">
