@@ -1,11 +1,11 @@
 import Footer from "../../ui/components/Footer";
 import NavBar from "../../ui/components/NavBar";
 import Section from "../../ui/components/Section";
-import ContactSection from "../../ui/section/ContactSection";
-import HeroSection from "../../ui/section/HeroSection";
-import RentalSection from "../../ui/section/RentalSection";
-import ReviewsSection from "../../ui/section/ReviewsSection";
-import ShopSection from "../../ui/section/ShopSection";
+import ContactSection from "../sections/homeSections/ContactSection";
+import HeroSection from "../sections/homeSections/HeroSection";
+import RentalSection from "../sections/homeSections/RentalSection";
+import ReviewsSection from "../sections/homeSections/ReviewsSection";
+import ShopSection from "../sections/homeSections/ShopSection";
 
 export default function HomePage() {
   const sections = [

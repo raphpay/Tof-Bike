@@ -5,6 +5,9 @@ const AppContent: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+
+      {/* Rental */}
+      <Route path="/location" element={<HomePage />} />
     </Routes>
   );
 };

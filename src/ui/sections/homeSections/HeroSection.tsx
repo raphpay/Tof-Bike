@@ -1,6 +1,6 @@
 import React from "react";
 import Hero from "../../assets/hero.jpg";
-import Button from "../components/Button"; // adjust path as needed
+import Button from "../../components/Button";
 
 const section = "relative flex flex-col h-full w-full bg-cover bg-center";
 const container = "relative z-10 flex flex-col justify-center h-screen mx-10";
