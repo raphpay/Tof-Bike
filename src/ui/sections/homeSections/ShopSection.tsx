@@ -1,7 +1,7 @@
 import { Bike, ShoppingCart } from "lucide-react";
 import React from "react";
-import ShopImage from "../../assets/shop.jpg";
-import Button from "../components/Button";
+import ShopImage from "../../../assets/shop.jpg";
+import Button from "../../components/Button";
 
 const section =
   "flex flex-col md:flex-row w-full h-screen bg-background-dark text-gray-800";

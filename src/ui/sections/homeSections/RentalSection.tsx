@@ -1,6 +1,7 @@
 import { Clock, MapPin, ShieldCheck } from "lucide-react";
 import React from "react";
-import Button from "../components/Button"; // Reuse your custom Button component
+import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
 
 const section =
   "flex flex-col justify-center items-center text-center w-full h-screen bg-background-light px-6 py-12";
@@ -15,6 +16,7 @@ const featureTitle = "text-lg font-semibold mb-2";
 const featureDescription = "text-sm text-gray-600";
 
 const RentalSection: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className={section}>
       {/* Title */}
@@ -55,7 +57,9 @@ const RentalSection: React.FC = () => {
       <Button
         title="Réserver maintenant"
         variant="primary"
-        onClick={() => console.log("Voir les offres")}
+        onClick={() => {
+          navigate("/location");
+        }}
       />
     </section>
   );

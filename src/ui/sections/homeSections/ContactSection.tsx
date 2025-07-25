@@ -1,6 +1,6 @@
 import { Clock, MapPin, Phone } from "lucide-react";
 import React from "react";
-import ContactMap from "../../assets/map.png";
+import ContactMap from "../../../assets/map.png";
 
 const section =
   "w-full h-screen flex flex-col md:flex-row bg-background-light text-gray-800";

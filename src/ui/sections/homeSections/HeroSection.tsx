@@ -1,5 +1,6 @@
 import React from "react";
-import Hero from "../../assets/hero.jpg";
+import { useNavigate } from "react-router-dom";
+import Hero from "../../../assets/hero.jpg";
 import Button from "../../components/Button";
 
 const section = "relative flex flex-col h-full w-full bg-cover bg-center";
@@ -11,6 +12,7 @@ const description = "text-md md:text-lg text-white mb-6";
 const buttonGroup = "flex flex-col sm:flex-row gap-4";
 
 const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <section className={section} style={{ backgroundImage: `url(${Hero})` }}>
       <div className={overlay}></div>
@@ -33,7 +35,9 @@ const HeroSection: React.FC = () => {
           <Button
             title="Nos locations"
             variant="secondary"
-            onClick={() => console.log("Plus d'infos")}
+            onClick={() => {
+              navigate("/location");
+            }}
           />
         </div>
       </div>
