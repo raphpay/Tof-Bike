@@ -1,42 +1,64 @@
-import type Bike from "../../../business-logic/models/Bike";
+import type { BikeData } from "../../../business-logic/models/Bike";
 
 interface BikeSelectionProps {
-  bike: Bike;
-  selected: { bikeId: string; size: string }[];
-  onSelect: (bikeId: string, size: string) => void;
+  bike: BikeData;
+  bikes: BikeData[];
+  selectedBikes: { bikeId: string; size: string; quantity: number }[];
+  onSelect: (bikeId: string, size: string, quantity: number) => void;
 }
 
 const BikeSelection: React.FC<BikeSelectionProps> = ({
   bike,
-  selected,
+  bikes,
+  selectedBikes,
   onSelect,
 }) => {
+  const selectedEntry = selectedBikes.find(
+    (b) => b.bikeId === bike.id && b.size === bike.size,
+  );
+
+  const quantity = selectedEntry?.quantity ?? 0;
+  const price = bike.pricePerHour * quantity;
+
+  const increment = () => {
+    if (quantity < bike.stock) {
+      onSelect(bike.id, bike.size, quantity + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (quantity > 0) {
+      onSelect(bike.id, bike.size, quantity - 1);
+    }
+  };
+
   return (
-    <div
-      key={bike.id}
-      className="flex flex-col items-center space-y-2 rounded-xl border p-4"
-    >
-      <img
-        src={bike.image}
-        alt={bike.name}
-        className="h-32 w-32 rounded object-cover"
-      />
-      <h4 className="font-semibold">{bike.name}</h4>
-      {bike.sizes.map((s) => {
-        const isSelected = selected.some(
-          (sel) => sel.bikeId === bike.id.toString() && sel.size === s.size,
-        );
-        return (
-          <button
-            key={s.size}
-            onClick={() => s.available && onSelect(bike.id.toString(), s.size)}
-            className={`rounded border px-3 py-1 text-sm ${!s.available ? "cursor-not-allowed bg-gray-300" : ""} ${isSelected ? "bg-primary hover:bg-primary-dark text-white" : "hover:bg-primary-light bg-primary-lighter"} `}
-            disabled={!s.available}
-          >
-            {s.size}
-          </button>
-        );
-      })}
+    <div className="flex flex-col items-center space-y-2 rounded-xl border p-4 shadow-sm">
+      <h4 className="text-center font-semibold">{bike.name}</h4>
+      <p className="text-sm text-gray-600">Taille: {bike.size}</p>
+      <p className="text-sm text-gray-600">Stock: {bike.stock}</p>
+
+      <div className="flex items-center space-x-2">
+        <button
+          onClick={decrement}
+          className="rounded bg-gray-200 px-2 py-1 text-lg disabled:opacity-50"
+          disabled={quantity === 0}
+        >
+          −
+        </button>
+        <span className="w-6 text-center">{quantity}</span>
+        <button
+          onClick={increment}
+          className="rounded bg-gray-200 px-2 py-1 text-lg disabled:opacity-50"
+          disabled={quantity >= bike.stock}
+        >
+          +
+        </button>
+      </div>
+
+      <p className="text-sm text-gray-700">
+        Prix / heure : <strong>{price.toFixed(2)} €</strong>
+      </p>
     </div>
   );
 };

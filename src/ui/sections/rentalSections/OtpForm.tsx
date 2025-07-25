@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import Button from "../../components/Button";
 
 interface OtpFormProps {
@@ -21,11 +23,12 @@ const OtpForm: React.FC<OtpFormProps> = ({
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState<string | undefined>();
   const [timerStarted, setTimerStarted] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
 
   useEffect(() => {
-    let timer;
+    let timer: NodeJS.Timeout;
     if (timerStarted && resendTimer > 0) {
       timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
     }
@@ -44,9 +47,8 @@ const OtpForm: React.FC<OtpFormProps> = ({
   };
 
   const handleSendCode = () => {
-    if (!email || !firstName || !lastName) return;
-    // Simulate sending code
-    console.log("Sending OTP to", email);
+    if (!email || !firstName || !lastName || !phone || !isEmailValid) return;
+    console.log("Sending OTP to", email, phone);
     setResendTimer(30);
     setTimerStarted(true);
   };
@@ -71,17 +73,30 @@ const OtpForm: React.FC<OtpFormProps> = ({
         type="email"
         placeholder="Email"
         className={`w-full rounded border p-2 ${
-          isEmailValid ? "border-gray-300" : "border-red-500"
+          !isEmailValid && "border-red-500"
         }`}
         value={email}
         onChange={handleEmailChange}
+      />
+      <PhoneInput
+        defaultCountry="FR"
+        countries={["FR", "RE"]}
+        placeholder="Numéro de téléphone"
+        value={phone}
+        onChange={setPhone}
+        className="w-full"
       />
 
       <Button
         title="Envoyer le code"
         onClick={handleSendCode}
         disabled={
-          !email || !firstName || !lastName || timerStarted || !isEmailValid
+          !email ||
+          !firstName ||
+          !lastName ||
+          !phone ||
+          timerStarted ||
+          !isEmailValid
         }
       />
 
@@ -116,6 +131,7 @@ const OtpForm: React.FC<OtpFormProps> = ({
           </p>
         </div>
       )}
+
       <Button title="Retour" onClick={handleBack} variant="underline" />
     </div>
   );

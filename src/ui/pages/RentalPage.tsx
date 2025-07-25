@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import type Bike from "../../business-logic/models/Bike";
-
 import { useNavigate } from "react-router-dom";
+import type { BikeData } from "../../business-logic/models/Bike"; // Adjust this if needed
+import { getAllRentalBikes } from "../../business-logic/services/rentalBikesService";
+
 import Button from "../components/Button";
 import BikeSelection from "../sections/rentalSections/BikeSelection";
 import Confirmation from "../sections/rentalSections/Confirmation";
@@ -9,67 +11,6 @@ import Contract from "../sections/rentalSections/Contract";
 import DurationSelection from "../sections/rentalSections/DurationSelection";
 import OtpForm from "../sections/rentalSections/OtpForm";
 import Summary from "../sections/rentalSections/Summary";
-
-// Dummy bike data
-const bikes: Bike[] = [
-  {
-    id: 1,
-    name: "VTT Explorer",
-    image: "https://via.placeholder.com/150",
-    sizes: [
-      {
-        size: "S",
-        available: true,
-      },
-      {
-        size: "M",
-        available: true,
-      },
-      {
-        size: "L",
-        available: false,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "City Cruiser",
-    image: "https://via.placeholder.com/150",
-    sizes: [
-      {
-        size: "S",
-        available: false,
-      },
-      {
-        size: "M",
-        available: false,
-      },
-      {
-        size: "L",
-        available: false,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Road Runner",
-    image: "https://via.placeholder.com/150",
-    sizes: [
-      {
-        size: "S",
-        available: false,
-      },
-      {
-        size: "M",
-        available: true,
-      },
-      {
-        size: "L",
-        available: false,
-      },
-    ],
-  },
-];
 
 const steps = [
   "Vélo",
@@ -83,6 +24,15 @@ const steps = [
 const RentalPage = () => {
   const navigate = useNavigate();
 
+  const {
+    data: bikes = [],
+    isLoading,
+    isError,
+  } = useQuery<BikeData[]>({
+    queryKey: ["rentalBikes"],
+    queryFn: getAllRentalBikes,
+  });
+
   const [step, setStep] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [startTime, setStartTime] = useState<string>("");
@@ -91,24 +41,43 @@ const RentalPage = () => {
   const [otp, setOtp] = useState<string>("");
   const [resendTimer, setResendTimer] = useState<number>(30);
   const [selectedBikes, setSelectedBikes] = useState<
-    { bikeId: string; size: string }[]
+    { bikeId: string; size: string; quantity: number }[]
   >([]);
 
   const handleNext = () =>
     setStep((prev) => Math.min(prev + 1, steps.length - 1));
   const handleBack = () => setStep((prev) => Math.max(prev - 1, 0));
 
-  const handleSelect = (bikeId: string, size: string) => {
+  const handleSelect = (bikeId: string, size: string, quantity: number) => {
     setSelectedBikes((prev) => {
-      const alreadySelected = prev.find(
-        (b) => b.bikeId === bikeId && b.size === size,
-      );
-      if (alreadySelected) {
+      const exists = prev.find((b) => b.bikeId === bikeId && b.size === size);
+
+      if (quantity === 0) {
         return prev.filter((b) => !(b.bikeId === bikeId && b.size === size));
       }
-      return [...prev, { bikeId, size }];
+
+      if (exists) {
+        return prev.map((b) =>
+          b.bikeId === bikeId && b.size === size ? { ...b, quantity } : b,
+        );
+      }
+
+      return [...prev, { bikeId, size, quantity }];
     });
   };
+
+  const totalPrice = selectedBikes.reduce((acc, selection) => {
+    const bike = bikes.find(
+      (b) => b.id === selection.bikeId && b.size === selection.size,
+    );
+    return acc + (bike?.pricePerHour ?? 0) * selection.quantity;
+  }, 0);
+
+  if (isLoading) return <p className="text-center">Chargement des vélos...</p>;
+  if (isError)
+    return (
+      <p className="text-center text-red-500">Erreur lors du chargement.</p>
+    );
 
   return (
     <div className="bg-background-light flex min-h-screen items-center justify-center px-4">
@@ -132,17 +101,29 @@ const RentalPage = () => {
               <BikeSelection
                 key={bike.id}
                 bike={bike}
-                selected={selectedBikes}
+                bikes={bikes}
+                selectedBikes={selectedBikes}
                 onSelect={handleSelect}
               />
             ))}
-            <div className="flex-column">
+            <div className="flex-column col-span-full space-y-2">
               <Button
                 title="Guide des tailles"
                 onClick={() => navigate("/location-bike-sizes")}
                 variant="underline"
               />
-              <div className="flex items-center">
+
+              <div>
+                <p className="mr-4 font-semibold">
+                  Prix estimé / heure : {totalPrice.toFixed(2)} €
+                </p>
+
+                <p className="text-sm text-gray-400">
+                  * Prix dégressif en fonction de la durée de location
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
                 <Button
                   title="Continuer"
                   onClick={handleNext}
@@ -157,6 +138,7 @@ const RentalPage = () => {
             </div>
           </div>
         )}
+
         {step === 1 && (
           <DurationSelection
             startTime={startTime}
@@ -177,6 +159,7 @@ const RentalPage = () => {
             handleNext={handleNext}
             handleBack={handleBack}
             bikes={bikes}
+            duration={duration}
           />
         )}
         {step === 3 && (

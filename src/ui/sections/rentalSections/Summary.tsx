@@ -1,11 +1,12 @@
-import type Bike from "../../../business-logic/models/Bike";
+import type { BikeData } from "../../../business-logic/models/Bike";
 import Button from "../../components/Button";
 
 interface SummaryProps {
-  bikes: Bike[];
-  selectedBikes: { bikeId: string; size: string }[];
+  bikes: BikeData[];
+  selectedBikes: { bikeId: string; size: string; quantity: number }[];
   startTime: string;
   endTime: string;
+  duration: number;
   handleNext: () => void;
   handleBack: () => void;
 }
@@ -15,27 +16,32 @@ const Summary: React.FC<SummaryProps> = ({
   selectedBikes,
   startTime,
   endTime,
+  duration,
   handleNext,
   handleBack,
 }) => {
+  const totalPrice = selectedBikes.reduce((acc, selection) => {
+    const bike = bikes.find(
+      (b) => b.id === selection.bikeId && b.size === selection.size,
+    );
+    return acc + (bike?.pricePerHour ?? 0) * selection.quantity;
+  }, 0);
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">Résumé</h3>
 
       <div className="space-y-2">
         {selectedBikes.length > 0 ? (
-          selectedBikes.map(({ bikeId, size }, index) => {
-            const bike = bikes.find((b) => b.id.toString() === bikeId);
+          selectedBikes.map(({ bikeId, size, quantity }, index) => {
+            const bike = bikes.find((b) => b.id === bikeId && b.size === size);
             return (
-              <div
-                key={index}
-                className="bg-secondary-lighter rounded-md border p-3"
-              >
+              <div key={index} className="rounded-md border bg-gray-50 p-3">
                 <p>
-                  <strong>Vélo :</strong> {bike ? bike.name : "Inconnu"}
+                  <strong>Vélo :</strong> {bike?.name} ({size})
                 </p>
                 <p>
-                  <strong>Taille :</strong> {size}
+                  <strong>Quantité :</strong> {quantity}
                 </p>
               </div>
             );
@@ -51,6 +57,8 @@ const Summary: React.FC<SummaryProps> = ({
       <p>
         <strong>Fin :</strong> {endTime.replace("T", " ")}
       </p>
+
+      <p className="font-semibold">Prix total : {totalPrice.toFixed(2)} €</p>
 
       <div className="flex justify-start gap-4 pt-4">
         <Button title="Continuer" onClick={handleNext} />
