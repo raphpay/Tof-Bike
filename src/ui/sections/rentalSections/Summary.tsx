@@ -1,10 +1,12 @@
 import type Bike from "../../../business-logic/models/Bike";
+import Button from "../../components/Button";
 
 interface SummaryProps {
   selectedBike: Bike | null;
   startTime: string;
   endTime: string;
   handleNext: () => void;
+  handleBack: () => void;
 }
 
 const Summary: React.FC<SummaryProps> = ({
@@ -12,6 +14,7 @@ const Summary: React.FC<SummaryProps> = ({
   startTime,
   endTime,
   handleNext,
+  handleBack,
 }) => {
   return (
     <div className="space-y-4">
@@ -25,12 +28,10 @@ const Summary: React.FC<SummaryProps> = ({
       <p>
         <strong>Fin :</strong> {endTime.replace("T", " ")}
       </p>
-      <button
-        className="rounded bg-blue-600 px-4 py-2 text-white"
-        onClick={handleNext}
-      >
-        Continuer
-      </button>
+      <div className="flex justify-start pt-4">
+        <Button title="Continuer" onClick={handleNext} />
+        <Button variant="underline" title="Retour" onClick={handleBack} />
+      </div>
     </div>
   );
 };

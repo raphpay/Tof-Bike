@@ -108,6 +108,7 @@ const RentalPage = () => {
             startTime={startTime}
             endTime={endTime}
             handleNext={handleNext}
+            handleBack={handleBack}
           />
         )}
         {step === 3 && (
