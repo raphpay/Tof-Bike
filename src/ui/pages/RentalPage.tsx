@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import type Bike from "../../business-logic/models/Bike";
 
-import Button from "../components/Button";
-
 import BikeSelection from "../sections/rentalSections/BikeSelection";
 import Confirmation from "../sections/rentalSections/Conformation";
 import Contract from "../sections/rentalSections/Contract";
@@ -33,11 +31,11 @@ const bikes: Bike[] = [
 ];
 
 const steps = [
-  "Select Bike",
-  "Select Duration",
-  "Summary",
-  "Contract",
-  "Verify Identity",
+  "Vélo",
+  "Durée",
+  "Résumé",
+  "Contrat",
+  "Validation",
   "Confirmation",
 ];
 
@@ -96,10 +94,12 @@ const RentalPage = () => {
           <DurationSelection
             startTime={startTime}
             endTime={endTime}
+            duration={duration}
             setDuration={setDuration}
             setStartTime={setStartTime}
             setEndTime={setEndTime}
             handleNext={handleNext}
+            handleBack={handleBack}
           />
         )}
         {step === 2 && (
@@ -127,13 +127,6 @@ const RentalPage = () => {
           />
         )}
         {step === 5 && <Confirmation />}
-
-        {/* Navigation */}
-        {step > 0 && step < 5 && (
-          <div className="flex justify-between pt-4">
-            <Button variant="underline" title="Retour" onClick={handleBack} />
-          </div>
-        )}
       </div>
     </div>
   );
