@@ -1,6 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import type { BikeData } from "../models/Bike";
+import type BikeData from "../models/Bike";
 
 // CREATE
 // READ

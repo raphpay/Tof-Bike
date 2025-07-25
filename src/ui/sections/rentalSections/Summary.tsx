@@ -1,4 +1,4 @@
-import type { BikeData } from "../../../business-logic/models/Bike";
+import type BikeData from "../../../business-logic/models/Bike";
 import Button from "../../components/Button";
 
 interface SummaryProps {
@@ -6,7 +6,7 @@ interface SummaryProps {
   selectedBikes: { bikeId: string; size: string; quantity: number }[];
   startTime: string;
   endTime: string;
-  duration: number;
+  finalPrice: number;
   handleNext: () => void;
   handleBack: () => void;
 }
@@ -16,17 +16,10 @@ const Summary: React.FC<SummaryProps> = ({
   selectedBikes,
   startTime,
   endTime,
-  duration,
+  finalPrice,
   handleNext,
   handleBack,
 }) => {
-  const totalPrice = selectedBikes.reduce((acc, selection) => {
-    const bike = bikes.find(
-      (b) => b.id === selection.bikeId && b.size === selection.size,
-    );
-    return acc + (bike?.pricePerHour ?? 0) * selection.quantity;
-  }, 0);
-
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">Résumé</h3>
@@ -58,7 +51,7 @@ const Summary: React.FC<SummaryProps> = ({
         <strong>Fin :</strong> {endTime.replace("T", " ")}
       </p>
 
-      <p className="font-semibold">Prix total : {totalPrice.toFixed(2)} €</p>
+      <p className="font-semibold">Prix total : {finalPrice.toFixed(2)} €</p>
 
       <div className="flex justify-start gap-4 pt-4">
         <Button title="Continuer" onClick={handleNext} />

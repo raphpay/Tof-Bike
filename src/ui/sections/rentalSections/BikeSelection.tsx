@@ -1,4 +1,4 @@
-import type { BikeData } from "../../../business-logic/models/Bike";
+import type BikeData from "../../../business-logic/models/Bike";
 
 interface BikeSelectionProps {
   bike: BikeData;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { BikeData } from "../../business-logic/models/Bike"; // Adjust this if needed
+import type BikeData from "../../business-logic/models/Bike"; // Adjust this if needed
 import { getAllRentalBikes } from "../../business-logic/services/rentalBikesService";
 
 import Button from "../components/Button";
@@ -43,6 +43,7 @@ const RentalPage = () => {
   const [selectedBikes, setSelectedBikes] = useState<
     { bikeId: string; size: string; quantity: number }[]
   >([]);
+  const [finalPrice, setFinalPrice] = useState<number>(0);
 
   const handleNext = () =>
     setStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -144,11 +145,14 @@ const RentalPage = () => {
             startTime={startTime}
             endTime={endTime}
             duration={duration}
+            bikes={bikes}
+            selectedBikes={selectedBikes}
             setDuration={setDuration}
             setStartTime={setStartTime}
             setEndTime={setEndTime}
             handleNext={handleNext}
             handleBack={handleBack}
+            setFinalPrice={setFinalPrice}
           />
         )}
         {step === 2 && (
@@ -156,10 +160,10 @@ const RentalPage = () => {
             selectedBikes={selectedBikes}
             startTime={startTime}
             endTime={endTime}
+            bikes={bikes}
+            finalPrice={finalPrice}
             handleNext={handleNext}
             handleBack={handleBack}
-            bikes={bikes}
-            duration={duration}
           />
         )}
         {step === 3 && (
