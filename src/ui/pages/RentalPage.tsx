@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type Bike from "../../business-logic/models/Bike";
 
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import BikeSelection from "../sections/rentalSections/BikeSelection";
 import Confirmation from "../sections/rentalSections/Confirmation";
 import Contract from "../sections/rentalSections/Contract";
@@ -13,20 +15,59 @@ const bikes: Bike[] = [
   {
     id: 1,
     name: "VTT Explorer",
-    available: true,
     image: "https://via.placeholder.com/150",
+    sizes: [
+      {
+        size: "S",
+        available: true,
+      },
+      {
+        size: "M",
+        available: true,
+      },
+      {
+        size: "L",
+        available: false,
+      },
+    ],
   },
   {
     id: 2,
     name: "City Cruiser",
-    available: false,
     image: "https://via.placeholder.com/150",
+    sizes: [
+      {
+        size: "S",
+        available: false,
+      },
+      {
+        size: "M",
+        available: false,
+      },
+      {
+        size: "L",
+        available: false,
+      },
+    ],
   },
   {
     id: 3,
     name: "Road Runner",
-    available: true,
     image: "https://via.placeholder.com/150",
+    sizes: [
+      {
+        size: "S",
+        available: false,
+      },
+      {
+        size: "M",
+        available: true,
+      },
+      {
+        size: "L",
+        available: false,
+      },
+    ],
   },
 ];
 
@@ -40,26 +81,34 @@ const steps = [
 ];
 
 const RentalPage = () => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState<number>(0);
-  const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
   const [duration, setDuration] = useState<number>(0);
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [accepted, setAccepted] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
   const [resendTimer, setResendTimer] = useState<number>(30);
-
-  useEffect(() => {
-    let timer;
-    if (step === 4 && resendTimer > 0) {
-      timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
-    }
-    return () => clearTimeout(timer);
-  }, [step, resendTimer]);
+  const [selectedBikes, setSelectedBikes] = useState<
+    { bikeId: string; size: string }[]
+  >([]);
 
   const handleNext = () =>
     setStep((prev) => Math.min(prev + 1, steps.length - 1));
   const handleBack = () => setStep((prev) => Math.max(prev - 1, 0));
+
+  const handleSelect = (bikeId: string, size: string) => {
+    setSelectedBikes((prev) => {
+      const alreadySelected = prev.find(
+        (b) => b.bikeId === bikeId && b.size === size,
+      );
+      if (alreadySelected) {
+        return prev.filter((b) => !(b.bikeId === bikeId && b.size === size));
+      }
+      return [...prev, { bikeId, size }];
+    });
+  };
 
   return (
     <div className="bg-background-light flex min-h-screen items-center justify-center px-4">
@@ -81,13 +130,31 @@ const RentalPage = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {bikes.map((bike) => (
               <BikeSelection
+                key={bike.id}
                 bike={bike}
-                onSelect={(selectedBike: Bike) => {
-                  setSelectedBike(selectedBike);
-                  handleNext();
-                }}
+                selected={selectedBikes}
+                onSelect={handleSelect}
               />
             ))}
+            <div className="flex-column">
+              <Button
+                title="Guide des tailles"
+                onClick={() => navigate("/location-bike-sizes")}
+                variant="underline"
+              />
+              <div className="flex items-center">
+                <Button
+                  title="Continuer"
+                  onClick={handleNext}
+                  disabled={selectedBikes.length === 0}
+                />
+                <Button
+                  title="Effacer la sélection"
+                  onClick={() => setSelectedBikes([])}
+                  variant="underline"
+                />
+              </div>
+            </div>
           </div>
         )}
         {step === 1 && (
@@ -104,11 +171,12 @@ const RentalPage = () => {
         )}
         {step === 2 && (
           <Summary
-            selectedBike={selectedBike}
+            selectedBikes={selectedBikes}
             startTime={startTime}
             endTime={endTime}
             handleNext={handleNext}
             handleBack={handleBack}
+            bikes={bikes}
           />
         )}
         {step === 3 && (
@@ -129,7 +197,9 @@ const RentalPage = () => {
             handleBack={handleBack}
           />
         )}
-        {step === 5 && <Confirmation />}
+        {step === 5 && (
+          <Confirmation selectedBikeCount={selectedBikes.length} />
+        )}
       </div>
     </div>
   );

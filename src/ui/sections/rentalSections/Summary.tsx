@@ -2,7 +2,8 @@ import type Bike from "../../../business-logic/models/Bike";
 import Button from "../../components/Button";
 
 interface SummaryProps {
-  selectedBike: Bike | null;
+  bikes: Bike[];
+  selectedBikes: { bikeId: string; size: string }[];
   startTime: string;
   endTime: string;
   handleNext: () => void;
@@ -10,7 +11,8 @@ interface SummaryProps {
 }
 
 const Summary: React.FC<SummaryProps> = ({
-  selectedBike,
+  bikes,
+  selectedBikes,
   startTime,
   endTime,
   handleNext,
@@ -19,16 +21,38 @@ const Summary: React.FC<SummaryProps> = ({
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-bold">Résumé</h3>
-      <p>
-        <strong>Vélo :</strong> {selectedBike?.name}
-      </p>
+
+      <div className="space-y-2">
+        {selectedBikes.length > 0 ? (
+          selectedBikes.map(({ bikeId, size }, index) => {
+            const bike = bikes.find((b) => b.id.toString() === bikeId);
+            return (
+              <div
+                key={index}
+                className="bg-secondary-lighter rounded-md border p-3"
+              >
+                <p>
+                  <strong>Vélo :</strong> {bike ? bike.name : "Inconnu"}
+                </p>
+                <p>
+                  <strong>Taille :</strong> {size}
+                </p>
+              </div>
+            );
+          })
+        ) : (
+          <p>Aucun vélo sélectionné.</p>
+        )}
+      </div>
+
       <p>
         <strong>Début :</strong> {startTime.replace("T", " ")}
       </p>
       <p>
         <strong>Fin :</strong> {endTime.replace("T", " ")}
       </p>
-      <div className="flex justify-start pt-4">
+
+      <div className="flex justify-start gap-4 pt-4">
         <Button title="Continuer" onClick={handleNext} />
         <Button variant="underline" title="Retour" onClick={handleBack} />
       </div>
