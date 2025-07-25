@@ -116,6 +116,7 @@ const RentalPage = () => {
             accepted={accepted}
             setAccepted={setAccepted}
             handleNext={handleNext}
+            handleBack={handleBack}
           />
         )}
         {step === 4 && (
@@ -125,6 +126,7 @@ const RentalPage = () => {
             resendTimer={resendTimer}
             setResendTimer={setResendTimer}
             handleNext={handleNext}
+            handleBack={handleBack}
           />
         )}
         {step === 5 && <Confirmation />}
