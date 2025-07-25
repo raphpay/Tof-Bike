@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type Bike from "../../business-logic/models/Bike";
 
 import BikeSelection from "../sections/rentalSections/BikeSelection";
-import Confirmation from "../sections/rentalSections/Conformation";
+import Confirmation from "../sections/rentalSections/Confirmation";
 import Contract from "../sections/rentalSections/Contract";
 import DurationSelection from "../sections/rentalSections/DurationSelection";
 import OtpForm from "../sections/rentalSections/OtpForm";
