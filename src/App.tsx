@@ -1,9 +1,10 @@
 import "react-phone-number-input/style.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import HomePage from "./ui/pages/HomePage";
 import RentalBikeSizes from "./ui/pages/RentalBikeSizes";
 import RentalConditionsPage from "./ui/pages/RentalConditionsPage";
 import RentalPage from "./ui/pages/RentalPage";
+// import HomePage from "./ui/relume/Home";
+import HomePage from "./ui/pages/HomePage";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
