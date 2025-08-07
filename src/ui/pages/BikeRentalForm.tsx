@@ -137,7 +137,11 @@ export default function BikeRentalForm() {
         </div>
 
         {/* Bouton */}
-        <Button title="Valider les informations" type="submit" />
+        <Button
+          title="Valider les informations"
+          type="submit"
+          disabled={!formData.acceptPrivacy || !formData.acceptTerms}
+        />
       </form>
     </div>
   );
