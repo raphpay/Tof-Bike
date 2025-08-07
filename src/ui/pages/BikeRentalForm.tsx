@@ -1,4 +1,7 @@
+import type { E164Number } from "libphonenumber-js";
 import React, { useState } from "react";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import PhoneInput from "react-phone-number-input/input";
 import Button from "../components/Button";
 
 export default function BikeRentalForm() {
@@ -11,24 +14,64 @@ export default function BikeRentalForm() {
     acceptPrivacy: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+  const [errors, setErrors] = useState({ email: "", phone: "" });
+  const [phone, setPhone] = useState<E164Number | undefined>(undefined);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value, type } = e.target;
+
+    let newValue: string | boolean = value;
+
+    if (type === "checkbox" && "checked" in e.target) {
+      newValue = (e.target as HTMLInputElement).checked;
+    }
+
+    // Formatage du numéro de téléphone
+    if (name === "phone") {
+      newValue = phone?.toString() ?? "";
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: newValue,
     }));
+  };
+
+  const validateForm = () => {
+    const newErrors = { email: "", phone: "" };
+    setErrors(newErrors);
+    let isValid = true;
+
+    // Email simple regex
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Adresse e-mail invalide.";
+      isValid = false;
+    }
+
+    // Téléphone : uniquement chiffres et minimum 6 à 15 caractères
+    if (!phone || (!isValidPhoneNumber(phone) && !phone.includes("262693"))) {
+      newErrors.phone = `Le numéro de téléphone est invalide`;
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     if (!formData.acceptTerms || !formData.acceptPrivacy) {
-      alert(
-        "Veuillez accepter les conditions et la politique de confidentialité.",
-      );
+      alert("Vous devez accepter les conditions.");
       return;
     }
 
-    console.log("Formulaire soumis :", formData);
+    formData.phone = phone?.toString() ?? "";
+
+    console.log("Formulaire valide :", formData);
   };
 
   return (
@@ -69,20 +112,21 @@ export default function BikeRentalForm() {
         </div>
 
         {/* Coordonnées */}
+        {/* Test */}
         <div>
           <label className="mb-1 block text-sm font-medium">
-            Téléphone <span className="text-red-500">*</span>
+            Numéro de téléphone
           </label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-blue-300 focus:outline-none"
+          <PhoneInput
+            value={phone}
+            onChange={setPhone}
+            placeholder="+262 692 12 34 56"
+            className="w-full rounded-md border border-gray-300 p-2"
           />
+          {errors.phone && <p className="text-red-600">{errors.phone}</p>}
         </div>
 
+        {/* Email */}
         <div>
           <label className="mb-1 block text-sm font-medium">
             Adresse e-mail (facultatif)
@@ -92,8 +136,12 @@ export default function BikeRentalForm() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-blue-300 focus:outline-none"
+            placeholder="nom@exemple.com"
+            className="w-full rounded-md border border-gray-300 p-2 focus:ring focus:ring-blue-300"
           />
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+          )}
         </div>
 
         {/* Conditions */}
