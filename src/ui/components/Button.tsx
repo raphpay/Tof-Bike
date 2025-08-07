@@ -3,9 +3,10 @@ import React from "react";
 
 type ButtonProps = {
   title: string;
+  type?: "submit" | "button";
   variant?: "primary" | "secondary";
-  onClick?: () => void;
   className?: string;
+  onClick?: () => void;
 };
 
 const baseStyles =
@@ -14,8 +15,9 @@ const baseStyles =
 const Button: React.FC<ButtonProps> = ({
   title,
   variant = "primary",
-  onClick,
+  type = "button",
   className,
+  onClick,
 }) => {
   const buttonClass = classNames(baseStyles, className, {
     "bg-primary text-white shadow hover:bg-primary-dark": variant === "primary",
@@ -24,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
   });
 
   return (
-    <button className={buttonClass} onClick={onClick}>
+    <button className={buttonClass} onClick={onClick} type={type}>
       {title}
     </button>
   );
