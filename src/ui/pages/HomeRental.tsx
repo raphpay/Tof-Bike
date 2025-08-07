@@ -11,7 +11,11 @@ export default function HomeRental() {
         title="Je réserve un vélo"
         onClick={() => navigate("formulaire-location")}
       />
-      <Button title="Laisser un avis" variant="secondary" />
+      <Button
+        title="Laisser un avis"
+        variant="secondary"
+        href="http://bit.ly/3UhVsql"
+      />
     </div>
   );
 }
