@@ -1,7 +1,9 @@
+import { addDoc, collection } from "firebase/firestore";
 import type { E164Number } from "libphonenumber-js";
 import React, { useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input/input";
+import { db } from "../../config/firebase";
 import Button from "../components/Button";
 
 export default function BikeRentalForm() {
@@ -12,6 +14,7 @@ export default function BikeRentalForm() {
     email: "",
     acceptTerms: false,
     acceptPrivacy: false,
+    createdAt: new Date(),
   });
 
   const [errors, setErrors] = useState({ email: "", phone: "" });
@@ -60,7 +63,7 @@ export default function BikeRentalForm() {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
@@ -70,8 +73,11 @@ export default function BikeRentalForm() {
     }
 
     formData.phone = phone?.toString() ?? "";
+    formData.createdAt = new Date();
 
-    console.log("Formulaire valide :", formData);
+    console.log("Formulaire valide");
+    await addDoc(collection(db, "rental-conditions"), formData);
+    console.log("Formulaire sauvegardé avec succès");
   };
 
   return (
