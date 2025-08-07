@@ -28,9 +28,9 @@ const Button: React.FC<ButtonProps> = ({
       variant === "primary" && disabled,
 
     // SECONDARY variant
-    "border border-secondary text-white hover:bg-secondary-darker hover:text-white":
+    "border border-secondary text-primary hover:bg-secondary-darker hover:text-white":
       variant === "secondary" && !disabled,
-    "border border-secondary text-white opacity-50 cursor-not-allowed":
+    "border border-secondary text-primary opacity-50 cursor-not-allowed":
       variant === "secondary" && disabled,
   });
 
