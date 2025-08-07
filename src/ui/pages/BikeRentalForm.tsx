@@ -109,7 +109,7 @@ export default function BikeRentalForm() {
           <label className="text-sm leading-tight">
             J'ai lu et j'accepte les{" "}
             <a
-              href="/conditions-location.pdf"
+              href="/cgv-loc.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary underline"
