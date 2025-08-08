@@ -8,9 +8,11 @@ type ButtonProps = {
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
+  href?: string;
 };
 
-const baseStyles = "px-6 py-3 font-semibold rounded-xl transition duration-300";
+const baseStyles =
+  "px-6 py-3 font-semibold rounded-xl transition duration-300 cursor-pointer";
 
 const Button: React.FC<ButtonProps> = ({
   title,
@@ -19,20 +21,36 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className,
   onClick,
+  href,
 }) => {
   const buttonClass = classNames(baseStyles, className, {
-    // PRIMARY variant
-    "bg-primary text-white shadow hover:bg-primary-dark":
+    // PRIMARY
+    "bg-primary text-white shadow hover:bg-primary-darker":
       variant === "primary" && !disabled,
     "bg-primary text-white opacity-50 cursor-not-allowed":
       variant === "primary" && disabled,
 
-    // SECONDARY variant
-    "border border-secondary text-white hover:bg-secondary-darker hover:text-white":
+    // SECONDARY
+    "border border-secondary text-primary hover:bg-secondary-darker hover:text-white":
       variant === "secondary" && !disabled,
-    "border border-secondary text-white opacity-50 cursor-not-allowed":
+    "border border-secondary text-primary opacity-50 cursor-not-allowed":
       variant === "secondary" && disabled,
   });
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={buttonClass}
+        onClick={onClick}
+        aria-disabled={disabled}
+      >
+        {title}
+      </a>
+    );
+  }
 
   return (
     <button
