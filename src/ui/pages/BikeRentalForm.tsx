@@ -16,9 +16,10 @@ export default function BikeRentalForm() {
     email: "",
     acceptTerms: false,
     acceptPrivacy: false,
-    bikes: [{ quantity: 1, type: "electric" }], // liste dynamique
-    accessories: [{ quantity: 1, type: "helmet", other: "" }], // {quantity: number, type: string, other?: string}
-    startDate: new Date().toISOString().slice(0, 16), // format datetime-local
+    bikes: [{ quantity: 1, type: "electric" }],
+    accessories: [{ quantity: 1, type: "helmet", other: "" }],
+    startDate: new Date().toISOString().split("T")[0], // "YYYY-MM-DD"
+    startTime: new Date().toTimeString().slice(0, 5), // "HH:MM"
     createdAt: new Date(),
   });
 
@@ -134,18 +135,17 @@ export default function BikeRentalForm() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    if (!formData.acceptTerms || !formData.acceptPrivacy) {
-      alert("Vous devez accepter les conditions.");
-      return;
-    }
+    // Fusionner date et heure en un seul objet Date
+    const startDateTime = new Date(
+      `${formData.startDate}T${formData.startTime}`,
+    );
 
-    const finalData = {
+    await addDoc(collection(db, "rental-conditions"), {
       ...formData,
-      phone: phone?.toString() ?? "",
+      startDateTime,
       createdAt: new Date(),
-    };
+    });
 
-    await addDoc(collection(db, "rental-conditions"), finalData);
     setSuccess(true);
   };
 
@@ -337,16 +337,31 @@ export default function BikeRentalForm() {
 
           {/* Date/heure début */}
           <div>
-            <label className="block text-sm font-medium">
-              Date et heure de début
-            </label>
-            <input
-              type="datetime-local"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              className="w-full rounded-md border p-2"
-            />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">Date de début</label>
+              <input
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">
+                Heure de début
+              </label>
+              <input
+                type="time"
+                name="startTime"
+                value={formData.startTime}
+                onChange={handleChange}
+                className="w-full rounded border p-2"
+                required
+              />
+            </div>
           </div>
 
           {/* Conditions */}
@@ -359,15 +374,20 @@ export default function BikeRentalForm() {
               required
             />
             <label className="text-sm">
-              J'accepte les{" "}
+              En signant ce contrat, je déclare: <br /> - Avoir pris
+              connaissances des{" "}
               <a
                 href="/cgv-loc.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline"
               >
-                conditions générales
+                Conditions générales de Location, de Vente, et de
+                Réparation{" "}
               </a>
+              <br />( affichées également dans le local commercial ) <br />
+              - Les accepter sans réserve <br />- Être apte à la pratique du
+              vélo et ne présenter aucune contre-indication médicale
             </label>
           </div>
           <div className="flex items-start gap-2">
@@ -379,7 +399,8 @@ export default function BikeRentalForm() {
               required
             />
             <label className="text-sm">
-              J'autorise le traitement de mes données.
+              J'autorise le traitement de mes données dans le cadre de la
+              location.
             </label>
           </div>
 
