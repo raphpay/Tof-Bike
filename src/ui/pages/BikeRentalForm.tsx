@@ -1,19 +1,23 @@
 import { addDoc, collection } from "firebase/firestore";
 import type { E164Number } from "libphonenumber-js";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input/input";
+import SignatureCanvas from "react-signature-canvas";
 import { db } from "../../config/firebase";
 import Button from "../components/Button";
 import LabelInput from "../components/LabelInput";
 import SuccessPage from "./SuccessPage";
 
 export default function BikeRentalForm() {
+  const sigRef = useRef<SignatureCanvas>(null);
+
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<E164Number | undefined>(undefined);
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
     acceptTerms: false,
     acceptPrivacy: false,
     bikes: [{ quantity: 1, type: "electric" }],
@@ -25,7 +29,6 @@ export default function BikeRentalForm() {
 
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({ email: "", phone: "" });
-  const [phone, setPhone] = useState<E164Number | undefined>(undefined);
 
   // Gestion champs simples
   const handleChange = (
@@ -119,7 +122,7 @@ export default function BikeRentalForm() {
     setErrors(newErrors);
     let isValid = true;
 
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = "Adresse e-mail invalide.";
       isValid = false;
     }
@@ -140,14 +143,41 @@ export default function BikeRentalForm() {
       `${formData.startDate}T${formData.startTime}`,
     );
 
+    if (!sigRef.current || sigRef.current.isEmpty()) {
+      alert("Veuillez apposer votre signature.");
+      return;
+    }
+
+    // Sauvegarde signature
+    const sigDataUrl = sigRef.current.toDataURL("image/png");
+    const sigUrl = await uploadSignature(sigDataUrl);
+
     await addDoc(collection(db, "rental-conditions"), {
       ...formData,
+      firstName,
+      lastName,
+      email,
+      phone,
+      signatureUrl: sigUrl,
       startDateTime,
       createdAt: new Date(),
     });
 
     setSuccess(true);
+    setPhone(undefined);
+    sigRef.current.clear();
+    setErrors({ email: "", phone: "" });
   };
+
+  async function uploadSignature(dataUrl: string) {
+    // const res = await fetch(dataUrl);
+    // const blob = await res.blob();
+    // const signatureRef = ref(storage, `signatures/${Date.now()}.png`);
+    // await uploadBytes(signatureRef, blob);
+    // return await getDownloadURL(signatureRef);
+    console.log("da", dataUrl);
+    return "nil";
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
@@ -165,16 +195,16 @@ export default function BikeRentalForm() {
           {/* Nom */}
           <LabelInput
             label="Prénom"
-            value={formData.firstName}
+            value={firstName}
             name="firstname"
-            onChange={handleChange}
+            onChange={(e) => setFirstName(e.target.value)}
             placeholder="Christophe"
           />
           <LabelInput
             label="Nom"
-            value={formData.lastName}
+            value={lastName}
             name="lastname"
-            onChange={handleChange}
+            onChange={(e) => setLastName(e.target.value)}
             placeholder="Payet"
           />
 
@@ -195,11 +225,11 @@ export default function BikeRentalForm() {
           {/* Email */}
           <LabelInput
             label="Adresse e-mail (facultatif)"
-            value={formData.email}
+            value={email}
             name="email"
             type="email"
             placeholder="nom@exemple.com"
-            onChange={handleChange}
+            onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
           />
 
@@ -402,6 +432,28 @@ export default function BikeRentalForm() {
               J'autorise le traitement de mes données dans le cadre de la
               location.
             </label>
+          </div>
+
+          {/* Signature */}
+          <div>
+            <label className="mb-1 block text-sm font-medium">Signature</label>
+            <div className="rounded border bg-gray-50 p-2">
+              <SignatureCanvas
+                ref={sigRef}
+                penColor="black"
+                backgroundColor="white"
+                canvasProps={{ width: 300, height: 120, className: "bg-white" }}
+              />
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  className="rounded border px-3 py-1"
+                  onClick={() => sigRef.current?.clear()}
+                >
+                  Effacer
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Bouton */}
