@@ -17,14 +17,7 @@ export default function BikeRentalForm() {
     acceptTerms: false,
     acceptPrivacy: false,
     bikes: [{ quantity: 1, type: "electric" }], // liste dynamique
-    accessories: {
-      antivol: false,
-      casque: false,
-      siegeBebe: false,
-      cariole: false,
-      autre: false,
-      autreDetail: "",
-    },
+    accessories: [{ quantity: 1, type: "helmet", other: "" }], // {quantity: number, type: string, other?: string}
     startDate: new Date().toISOString().slice(0, 16), // format datetime-local
     createdAt: new Date(),
   });
@@ -47,32 +40,6 @@ export default function BikeRentalForm() {
     setFormData((prev) => ({
       ...prev,
       [name]: newValue,
-    }));
-  };
-
-  // Gestion accessoires
-  const handleAccessoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      accessories: {
-        ...prev.accessories,
-        [name]: checked,
-        ...(name === "autre" && !checked ? { autreDetail: "" } : {}),
-      },
-    }));
-  };
-
-  // Gestion texte "autre"
-  const handleAccessoryDetailChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      accessories: {
-        ...prev.accessories,
-        autreDetail: e.target.value,
-      },
     }));
   };
 
@@ -113,6 +80,36 @@ export default function BikeRentalForm() {
     setFormData((prev) => ({
       ...prev,
       bikes: prev.bikes.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Gestion des accessoires
+  const addAccessory = () => {
+    setFormData((prev) => ({
+      ...prev,
+      accessories: [
+        ...prev.accessories,
+        { quantity: 1, type: "casque", other: "" },
+      ],
+    }));
+  };
+
+  const updateAccessory = (
+    index: number,
+    field: keyof (typeof formData.accessories)[0],
+    value: string,
+  ) => {
+    setFormData((prev) => {
+      const updated = [...prev.accessories];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, accessories: updated };
+    });
+  };
+
+  const removeAccessory = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      accessories: prev.accessories.filter((_, i) => i !== index),
     }));
   };
 
@@ -206,7 +203,7 @@ export default function BikeRentalForm() {
             error={errors.email}
           />
 
-          {/* Matériel loué */}
+          {/* Vélos loué */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Vélos</h3>
 
@@ -266,34 +263,76 @@ export default function BikeRentalForm() {
           </div>
 
           {/* Accessoires */}
-          <div className="space-y-2">
-            <h3 className="font-semibold">Accessoires</h3>
-            {Object.entries({
-              antivol: "Antivol",
-              casque: "Casque",
-              siegeBebe: "Siège bébé",
-              cariole: "Cariole",
-              autre: "Autre",
-            }).map(([key, label]) => (
-              <div key={key} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name={key}
-                  checked={(formData.accessories as any)[key]}
-                  onChange={handleAccessoryChange}
-                />
-                <label>{label}</label>
-                {key === "autre" && formData.accessories.autre && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Accessoires</h3>
+
+            {formData.accessories.map((acc, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-2 rounded-lg border p-3 sm:flex-row sm:items-center"
+              >
+                {/* Quantité */}
+                <select
+                  className="rounded border p-2"
+                  value={acc.quantity}
+                  onChange={(e) =>
+                    updateAccessory(index, "quantity", e.target.value)
+                  }
+                >
+                  {[1, 2, 3, 4, 5].map((q) => (
+                    <option key={q} value={q}>
+                      {q}
+                    </option>
+                  ))}
+                </select>
+
+                {/* Type */}
+                <select
+                  className="rounded border p-2"
+                  value={acc.type}
+                  onChange={(e) =>
+                    updateAccessory(index, "type", e.target.value)
+                  }
+                >
+                  <option value="antitheft-device">Antivol</option>
+                  <option value="helmet">Casque</option>
+                  <option value="baby-seat">Siège bébé</option>
+                  <option value="sledge">Cariole</option>
+                  <option value="other">Autre</option>
+                </select>
+
+                {/* Champ "autre" si sélectionné */}
+                {acc.type === "other" && (
                   <input
                     type="text"
-                    value={formData.accessories.autreDetail}
-                    onChange={handleAccessoryDetailChange}
-                    placeholder="Précisez..."
-                    className="flex-1 rounded-md border p-2"
+                    placeholder="Précisez"
+                    value={acc.other}
+                    onChange={(e) =>
+                      updateAccessory(index, "other", e.target.value)
+                    }
+                    className="flex-1 rounded border p-2"
                   />
                 )}
+
+                {/* Supprimer */}
+                <button
+                  type="button"
+                  onClick={() => removeAccessory(index)}
+                  className="text-red-500 underline"
+                >
+                  Supprimer
+                </button>
               </div>
             ))}
+
+            {/* Ajouter un accessoire */}
+            <button
+              type="button"
+              onClick={addAccessory}
+              className="bg-primary rounded px-4 py-2 text-white"
+            >
+              Ajouter un accessoire
+            </button>
           </div>
 
           {/* Date/heure début */}
