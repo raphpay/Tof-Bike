@@ -1,5 +1,6 @@
 import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../config/firebase"; // adapte ton chemin Firebase
 
 type RentalCondition = {
@@ -17,6 +18,8 @@ type RentalCondition = {
 };
 
 export default function AdminPage() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState<RentalCondition[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchName, setSearchName] = useState("");
@@ -149,6 +152,16 @@ export default function AdminPage() {
                     </td>
                     <td className="border px-4 py-2">
                       {item.createdAt.toDate().toLocaleString()}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          // Redirige vers la page d’export
+                          navigate(`/admin/contract/${item.id}`);
+                        }}
+                      >
+                        Exporter PDF
+                      </button>
                     </td>
                   </tr>
                 ))
