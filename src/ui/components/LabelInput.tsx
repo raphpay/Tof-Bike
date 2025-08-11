@@ -21,14 +21,16 @@ export default function LabelInput({
 }: Props) {
   return (
     <div>
-      <label className="block text-sm font-medium">{label}</label>
+      <label htmlFor={name} className="block text-base font-medium">
+        {label}
+      </label>
       <input
         name={name}
         value={value}
         onChange={onChange}
         type={type}
         required={required}
-        className="w-full rounded-md border p-2"
+        className="w-full rounded-lg border border-gray-300 p-3 text-base focus:ring focus:ring-blue-300 focus:outline-none"
         placeholder={placeholder}
       />
       {error && <p className="text-red-500">{error}</p>}

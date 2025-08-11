@@ -16,7 +16,7 @@ export default function BikeRentalForm() {
     email: "",
     acceptTerms: false,
     acceptPrivacy: false,
-    bikes: [{ quantity: 1, type: "classique" }], // liste dynamique
+    bikes: [{ quantity: 1, type: "electric" }], // liste dynamique
     accessories: {
       antivol: false,
       casque: false,
@@ -39,9 +39,11 @@ export default function BikeRentalForm() {
   ) => {
     const { name, value, type } = e.target;
     let newValue: string | boolean = value;
+
     if (type === "checkbox" && "checked" in e.target) {
       newValue = (e.target as HTMLInputElement).checked;
     }
+
     setFormData((prev) => ({
       ...prev,
       [name]: newValue,
@@ -75,21 +77,36 @@ export default function BikeRentalForm() {
   };
 
   // Gestion vélos
-  const handleBikeChange = (
-    index: number,
-    field: string,
-    value: string | number,
-  ) => {
-    const newBikes = [...formData.bikes];
-    newBikes[index] = { ...newBikes[index], [field]: value };
-    setFormData((prev) => ({ ...prev, bikes: newBikes }));
+  const addBike = () => {
+    setFormData((prev) => {
+      const hasElectric = prev.bikes.some((b) => b.type === "electric");
+      const hasClassic = prev.bikes.some((b) => b.type === "classic");
+
+      let newType: "electric" | "classic" = "electric";
+
+      if (hasElectric && !hasClassic) {
+        newType = "classic";
+      } else if (!hasElectric && hasClassic) {
+        newType = "electric";
+      }
+
+      return {
+        ...prev,
+        bikes: [...prev.bikes, { quantity: 1, type: newType }],
+      };
+    });
   };
 
-  const addBike = () => {
-    setFormData((prev) => ({
-      ...prev,
-      bikes: [...prev.bikes, { quantity: 1, type: "classique" }],
-    }));
+  const updateBike = (
+    index: number,
+    field: "quantity" | "type",
+    value: string,
+  ) => {
+    setFormData((prev) => {
+      const bikesCopy = [...prev.bikes];
+      bikesCopy[index] = { ...bikesCopy[index], [field]: value };
+      return { ...prev, bikes: bikesCopy };
+    });
   };
 
   const removeBike = (index: number) => {
@@ -191,45 +208,61 @@ export default function BikeRentalForm() {
 
           {/* Matériel loué */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Vélos</h3>
+            <h3 className="text-lg font-semibold">Vélos</h3>
+
             {formData.bikes.map((bike, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <input
-                  type="number"
-                  min="1"
+              <div
+                key={index}
+                className="flex flex-col gap-2 rounded-lg border p-3 sm:flex-row sm:items-center"
+              >
+                {/* Quantité */}
+                <select
+                  className="rounded border p-2"
                   value={bike.quantity}
                   onChange={(e) =>
-                    handleBikeChange(index, "quantity", Number(e.target.value))
+                    updateBike(index, "quantity", e.target.value)
                   }
-                  className="w-16 rounded-md border p-2"
-                />
-                <select
-                  value={bike.type}
-                  onChange={(e) =>
-                    handleBikeChange(index, "type", e.target.value)
-                  }
-                  className="flex-1 rounded-md border p-2"
                 >
-                  <option value="classique">Classique</option>
-                  <option value="electrique">Électrique</option>
+                  {[1, 2, 3, 4].map((q) => (
+                    <option key={q} value={q}>
+                      {q}
+                    </option>
+                  ))}
                 </select>
+
+                {/* Type */}
+                <select
+                  className="rounded border p-2"
+                  value={bike.type}
+                  onChange={(e) => updateBike(index, "type", e.target.value)}
+                >
+                  <option value="electric">Électrique</option>
+                  <option value="classic">Classique</option>
+                </select>
+
+                {/* Supprimer */}
                 {formData.bikes.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeBike(index)}
-                    className="text-red-500"
+                    className="text-red-500 underline"
                   >
-                    ✕
+                    Supprimer
                   </button>
                 )}
               </div>
             ))}
-            <Button
-              title="Ajouter un vélo"
-              type="button"
-              onClick={addBike}
-              variant="secondary"
-            />
+
+            {/* Ajouter un vélo */}
+            {formData.bikes.length < 2 && (
+              <button
+                type="button"
+                onClick={addBike}
+                className="bg-primary rounded px-4 py-2 text-white"
+              >
+                Ajouter un type de vélo
+              </button>
+            )}
           </div>
 
           {/* Accessoires */}
