@@ -5,6 +5,7 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input/input";
 import { db } from "../../config/firebase";
 import Button from "../components/Button";
+import LabelInput from "../components/LabelInput";
 import SuccessPage from "./SuccessPage";
 
 export default function BikeRentalForm() {
@@ -148,26 +149,20 @@ export default function BikeRentalForm() {
           </h2>
 
           {/* Nom */}
-          <div>
-            <label className="block text-sm font-medium">Prénom</label>
-            <input
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-              className="w-full rounded-md border p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Nom</label>
-            <input
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-              className="w-full rounded-md border p-2"
-            />
-          </div>
+          <LabelInput
+            label="Prénom"
+            value={formData.firstName}
+            name="firstname"
+            onChange={handleChange}
+            placeholder="Christophe"
+          />
+          <LabelInput
+            label="Nom"
+            value={formData.lastName}
+            name="lastname"
+            onChange={handleChange}
+            placeholder="Payet"
+          />
 
           {/* Téléphone */}
           <div>
@@ -184,20 +179,15 @@ export default function BikeRentalForm() {
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block text-sm font-medium">
-              Adresse e-mail (facultatif)
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="nom@exemple.com"
-              className="w-full rounded-md border p-2"
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
-          </div>
+          <LabelInput
+            label="Adresse e-mail (facultatif)"
+            value={formData.email}
+            name="email"
+            type="email"
+            placeholder="nom@exemple.com"
+            onChange={handleChange}
+            error={errors.email}
+          />
 
           {/* Matériel loué */}
           <div className="space-y-4">
