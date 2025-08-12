@@ -17,6 +17,7 @@ export default function BikeRentalForm() {
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<E164Number | undefined>(undefined);
+  const [isSignatureEmpty, setIsSignatureEmpty] = useState<boolean>(true);
 
   const [formData, setFormData] = useState({
     acceptTerms: false,
@@ -30,6 +31,14 @@ export default function BikeRentalForm() {
 
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({ email: "", phone: "" });
+  const isButtonDisabled =
+    !formData.acceptPrivacy ||
+    !formData.acceptTerms ||
+    !sigRef.current ||
+    isSignatureEmpty ||
+    !firstName ||
+    !lastName ||
+    !phone;
 
   // Gestion champs simples
   const handleChange = (
@@ -460,12 +469,34 @@ export default function BikeRentalForm() {
                 penColor="black"
                 backgroundColor="white"
                 canvasProps={{ width: 300, height: 120, className: "bg-white" }}
+                onEnd={() => {
+                  if (sigRef.current) {
+                    console.log("onend if");
+                    setIsSignatureEmpty(sigRef.current.isEmpty());
+                  } else {
+                    console.log("onend else");
+                    setIsSignatureEmpty(true);
+                  }
+                }}
+                onBegin={() => {
+                  if (sigRef.current) {
+                    console.log("onbegin if");
+                    setIsSignatureEmpty(sigRef.current.isEmpty());
+                  } else {
+                    console.log("onbegin else");
+                    setIsSignatureEmpty(true);
+                  }
+                  console.log("onbegin", sigRef.current?.isEmpty());
+                }}
               />
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"
                   className="rounded border px-3 py-1"
-                  onClick={() => sigRef.current?.clear()}
+                  onClick={() => {
+                    sigRef.current?.clear();
+                    setIsSignatureEmpty(true);
+                  }}
                 >
                   Effacer
                 </button>
@@ -477,7 +508,7 @@ export default function BikeRentalForm() {
           <Button
             title="Valider les informations"
             type="submit"
-            disabled={!formData.acceptPrivacy || !formData.acceptTerms}
+            disabled={isButtonDisabled}
           />
         </form>
       )}
