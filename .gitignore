@@ -23,7 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Common
 .env
+*.save
 
 # Firebase cache directory
 .firebase/
