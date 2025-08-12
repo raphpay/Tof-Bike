@@ -115,6 +115,7 @@ export default function AdminPage() {
                 <th className="border px-4 py-2">Accessoires</th>
                 <th className="border px-4 py-2">Début location</th>
                 <th className="border px-4 py-2">Créé le</th>
+                <th className="border px-4 py-2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -153,14 +154,14 @@ export default function AdminPage() {
                     <td className="border px-4 py-2">
                       {item.createdAt.toDate().toLocaleString()}
                     </td>
-                    <td>
+                    <td className="border px-4 py-2">
                       <button
                         onClick={() => {
                           // Redirige vers la page d’export
                           navigate(`/admin/contract/${item.id}`);
                         }}
                       >
-                        Exporter PDF
+                        Exporter en PDF
                       </button>
                     </td>
                   </tr>
