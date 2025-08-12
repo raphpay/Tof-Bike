@@ -7,6 +7,9 @@ import {
   View,
 } from "@react-pdf/renderer";
 import React from "react";
+import type Accessory from "../../business-logic/models/Accessory";
+import type Bike from "../../business-logic/models/Bike";
+import type RentalData from "../../business-logic/models/RentalData";
 
 // Styles pour PDF
 const styles = StyleSheet.create({
@@ -32,23 +35,6 @@ const styles = StyleSheet.create({
   },
 });
 
-type Bike = { quantity: number; type: string };
-type Accessory = { quantity: number; type: string; other?: string };
-
-type RentalData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  bikes: Bike[];
-  accessories: Accessory[];
-  startDateTime: Date;
-  createdAt: Date;
-  signature?: string; // si tu stockes une signature image ou texte
-  acceptTerms: boolean;
-  acceptPrivacy: boolean;
-};
-
 const formatDate = (date: any, showTime: boolean = false) => {
   if (date && typeof date.toDate === "function") {
     date = date.toDate();
@@ -65,6 +51,25 @@ const formatDate = (date: any, showTime: boolean = false) => {
       date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
   }
   return dateString;
+};
+
+const formatBikeType = (bike: Bike) => {
+  return bike.type === "electric" ? "Vélo électrique" : "Vélo classique";
+};
+
+const formatAccessoryType = (accessory: Accessory) => {
+  switch (accessory.type) {
+    case "helmet":
+      return "Casque";
+    case "lock":
+      return "Antivol";
+    case "pump":
+      return "Pompe à vélo";
+    case "repairKit":
+      return "Kit de réparation";
+    default:
+      return accessory.other || "Accessoire inconnu";
+  }
 };
 
 export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
@@ -93,7 +98,7 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
             <Text>Vélos:</Text>
             {data.bikes.map((b, i) => (
               <Text key={i}>
-                - {b.quantity} x {b.type}
+                - {b.quantity} x {formatBikeType(b)}
               </Text>
             ))}
           </View>
@@ -103,7 +108,9 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
             <Text>Accessoires:</Text>
             {data.accessories.map((a, i) => (
               <Text key={i}>
-                - {a.quantity} x {a.type} {a.other || ""}
+                {a.other
+                  ? `- ${a.other} `
+                  : `- ${a.quantity} x ${formatAccessoryType(a)}`}
               </Text>
             ))}
           </View>

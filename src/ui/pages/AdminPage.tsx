@@ -1,21 +1,10 @@
-import { collection, getDocs, Timestamp } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../config/firebase"; // adapte ton chemin Firebase
-
-type RentalCondition = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  acceptTerms: boolean;
-  acceptPrivacy: boolean;
-  bikes: { quantity: number; type: string }[];
-  accessories: { quantity: number; type: string; other?: string }[];
-  startDateTime: Timestamp;
-  createdAt: Timestamp;
-};
+import type Accessory from "../../business-logic/models/Accessory";
+import type Bike from "../../business-logic/models/Bike";
+import type RentalCondition from "../../business-logic/models/RentalCondition";
+import { db } from "../../config/firebase";
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -67,6 +56,26 @@ export default function AdminPage() {
 
     return matchesName && matchesDate;
   });
+
+  const formatBikeType = (bike: Bike) => {
+    return bike.type === "electric" ? "Vélo électrique" : "Vélo classique";
+  };
+
+  const formatAccessoryType = (accessory: Accessory) => {
+    console.log("a", accessory);
+    switch (accessory.type) {
+      case "helmet":
+        return "Casque";
+      case "lock":
+        return "Antivol";
+      case "pump":
+        return "Pompe à vélo";
+      case "repairKit":
+        return "Kit de réparation";
+      default:
+        return accessory.other || "Accessoire inconnu";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -121,7 +130,7 @@ export default function AdminPage() {
             <tbody>
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="border px-4 py-2 text-center">
+                  <td colSpan={8} className="border px-4 py-2 text-center">
                     Aucun résultat
                   </td>
                 </tr>
@@ -135,16 +144,15 @@ export default function AdminPage() {
                     <td className="border px-4 py-2">{item.phone}</td>
                     <td className="border px-4 py-2">
                       {item.bikes
-                        .map((b) => `${b.quantity} × ${b.type}`)
+                        .map((b) => `${b.quantity} x ${formatBikeType(b)}`)
                         .join(", ")}
                     </td>
                     <td className="border px-4 py-2">
                       {item.accessories
-                        .map(
-                          (a) =>
-                            `${a.quantity} × ${
-                              a.type === "other" && a.other ? a.other : a.type
-                            }`,
+                        .map((a) =>
+                          a.other
+                            ? `${a.other}`
+                            : `${a.quantity} x ${formatAccessoryType(a)}`,
                         )
                         .join(", ")}
                     </td>
