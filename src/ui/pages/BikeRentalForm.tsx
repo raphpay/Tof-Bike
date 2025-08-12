@@ -283,7 +283,7 @@ export default function BikeRentalForm() {
                     updateBike(index, "quantity", e.target.value)
                   }
                 >
-                  {[1, 2, 3, 4].map((q) => (
+                  {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                     <option key={q} value={q}>
                       {q}
                     </option>
@@ -342,7 +342,7 @@ export default function BikeRentalForm() {
                     updateAccessory(index, "quantity", e.target.value)
                   }
                 >
-                  {[1, 2, 3, 4, 5].map((q) => (
+                  {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                     <option key={q} value={q}>
                       {q}
                     </option>
