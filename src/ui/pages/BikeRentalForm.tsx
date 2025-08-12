@@ -18,6 +18,7 @@ export default function BikeRentalForm() {
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<E164Number | undefined>(undefined);
   const [isSignatureEmpty, setIsSignatureEmpty] = useState<boolean>(true);
+  const [isSendingInfos, setIsSendingInfos] = useState<boolean>(false);
 
   const [formData, setFormData] = useState({
     acceptTerms: false,
@@ -146,7 +147,11 @@ export default function BikeRentalForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    setIsSendingInfos(true);
+    if (!validateForm()) {
+      setIsSendingInfos(false);
+      return;
+    }
 
     // Fusionner date et heure en un seul objet Date
     const startDateTime = new Date(
@@ -154,6 +159,7 @@ export default function BikeRentalForm() {
     );
 
     if (!sigRef.current || sigRef.current.isEmpty()) {
+      setIsSendingInfos(false);
       alert("Veuillez apposer votre signature.");
       return;
     }
@@ -177,6 +183,7 @@ export default function BikeRentalForm() {
     setPhone(undefined);
     sigRef.current.clear();
     setErrors({ email: "", phone: "" });
+    setIsSendingInfos(false);
   };
 
   async function uploadSignature(dataUrl: string) {
@@ -471,19 +478,15 @@ export default function BikeRentalForm() {
                 canvasProps={{ width: 300, height: 120, className: "bg-white" }}
                 onEnd={() => {
                   if (sigRef.current) {
-                    console.log("onend if");
                     setIsSignatureEmpty(sigRef.current.isEmpty());
                   } else {
-                    console.log("onend else");
                     setIsSignatureEmpty(true);
                   }
                 }}
                 onBegin={() => {
                   if (sigRef.current) {
-                    console.log("onbegin if");
                     setIsSignatureEmpty(sigRef.current.isEmpty());
                   } else {
-                    console.log("onbegin else");
                     setIsSignatureEmpty(true);
                   }
                   console.log("onbegin", sigRef.current?.isEmpty());
@@ -504,11 +507,14 @@ export default function BikeRentalForm() {
             </div>
           </div>
 
+          {errors.email && <p className="text-red-600">{errors.email}</p>}
+          {errors.phone && <p className="text-red-600">{errors.phone}</p>}
+
           {/* Bouton */}
           <Button
             title="Valider les informations"
             type="submit"
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || isSendingInfos}
           />
         </form>
       )}
