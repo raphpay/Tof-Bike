@@ -1,5 +1,6 @@
 import {
   Document,
+  Image,
   Page,
   PDFViewer,
   StyleSheet,
@@ -128,16 +129,14 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
           Politique de confidentialité: {data.acceptPrivacy ? "Oui" : "Non"}
         </Text>
 
-        <Text style={styles.sectionTitle}>Signature</Text>
-        {data.signature ? (
-          <Text>{data.signature}</Text> // Ou tu peux afficher une image si tu as un lien base64
-        ) : (
-          <Text>Pas de signature</Text>
-        )}
-
         <Text style={{ marginTop: 30 }}>
           Fait à Cilaos, le {formatDate(data.createdAt)}
         </Text>
+        {data.signature ? (
+          <Image src={data.signature} style={{ width: 150, height: 80 }} />
+        ) : (
+          <Text>Pas de signature</Text>
+        )}
       </Page>
     </Document>
   </PDFViewer>
