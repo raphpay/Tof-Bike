@@ -5,6 +5,7 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import PhoneInput from "react-phone-number-input/input";
 import SignatureCanvas from "react-signature-canvas";
 import { db } from "../../config/firebase";
+import { supabase } from "../../config/supabase";
 import Button from "../components/Button";
 import LabelInput from "../components/LabelInput";
 import SuccessPage from "./SuccessPage";
@@ -150,7 +151,7 @@ export default function BikeRentalForm() {
 
     // Sauvegarde signature
     const sigDataUrl = sigRef.current.toDataURL("image/png");
-    const sigUrl = await uploadSignature(sigDataUrl);
+    const signatureFilename = await uploadSignature(sigDataUrl);
 
     await addDoc(collection(db, "rental-conditions"), {
       ...formData,
@@ -158,7 +159,7 @@ export default function BikeRentalForm() {
       lastName,
       email,
       phone,
-      signatureUrl: sigUrl,
+      signatureFilename: signatureFilename,
       startDateTime,
       createdAt: new Date(),
     });
@@ -170,13 +171,28 @@ export default function BikeRentalForm() {
   };
 
   async function uploadSignature(dataUrl: string) {
-    // const res = await fetch(dataUrl);
-    // const blob = await res.blob();
-    // const signatureRef = ref(storage, `signatures/${Date.now()}.png`);
-    // await uploadBytes(signatureRef, blob);
-    // return await getDownloadURL(signatureRef);
-    console.log("da", dataUrl);
-    return "nil";
+    // 1. Convert DataURL -> Blob
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+
+    // 2. Unique name to avoid collisions
+    const fileName = `signatures/${Date.now()}.png`;
+
+    // 3. Upload to the "signatures" bucket
+    const storageBucket = import.meta.env.VITE_SUPABASE_STORAGE_BUCKET;
+    const { error } = await supabase.storage
+      .from(storageBucket) // buket name in Supabase
+      .upload(fileName, blob, {
+        contentType: "image/png",
+        upsert: false, // false to avoid overwriting existing files
+      });
+
+    if (error) {
+      console.error("Erreur upload Supabase :", error);
+      throw error;
+    }
+
+    return fileName;
   }
 
   return (
@@ -228,6 +244,7 @@ export default function BikeRentalForm() {
             value={email}
             name="email"
             type="email"
+            required={false}
             placeholder="nom@exemple.com"
             onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
