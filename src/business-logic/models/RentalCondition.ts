@@ -12,4 +12,5 @@ export default interface RentalCondition {
   accessories: { quantity: number; type: string; other?: string }[];
   startDateTime: Timestamp;
   createdAt: Timestamp;
+  signatureFilename: string;
 }

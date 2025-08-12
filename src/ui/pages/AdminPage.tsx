@@ -168,10 +168,7 @@ export default function AdminPage() {
                       </td>
                       <td className="border px-4 py-2">
                         <button
-                          onClick={() => {
-                            // Redirige vers la page d’export
-                            navigate(`/admin/contract/${item.id}`);
-                          }}
+                          onClick={() => navigate(`/admin/contract/${item.id}`)}
                         >
                           Exporter en PDF
                         </button>
