@@ -1,24 +1,19 @@
+// RentalContractPDF.tsx
 import {
   Document,
   Image,
   Page,
-  PDFViewer,
   StyleSheet,
   Text,
   View,
+  pdf,
 } from "@react-pdf/renderer";
-import React from "react";
 import type Accessory from "../../business-logic/models/Accessory";
 import type Bike from "../../business-logic/models/Bike";
 import type RentalData from "../../business-logic/models/RentalData";
 
-// Styles pour PDF
 const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-    fontSize: 12,
-    fontFamily: "Helvetica",
-  },
+  page: { padding: 30, fontSize: 12, fontFamily: "Helvetica" },
   title: {
     fontSize: 18,
     textAlign: "center",
@@ -31,19 +26,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontWeight: "bold",
   },
-  row: {
-    marginBottom: 4,
-  },
+  row: { marginBottom: 4 },
 });
 
-const formatDate = (date: any, showTime: boolean = false) => {
-  if (date && typeof date.toDate === "function") {
-    date = date.toDate();
-  }
-
-  if (!(date instanceof Date)) {
-    return "Date invalide";
-  }
+const formatDate = (date: any, showTime = false) => {
+  if (date && typeof date.toDate === "function") date = date.toDate();
+  if (!(date instanceof Date)) return "Date invalide";
 
   let dateString = date.toLocaleDateString("fr-FR");
   if (showTime) {
@@ -54,10 +42,8 @@ const formatDate = (date: any, showTime: boolean = false) => {
   return dateString;
 };
 
-const formatBikeType = (bike: Bike) => {
-  return bike.type === "electric" ? "Vélo électrique" : "Vélo classique";
-};
-
+const formatBikeType = (bike: Bike) =>
+  bike.type === "electric" ? "Vélo électrique" : "Vélo classique";
 const formatAccessoryType = (accessory: Accessory) => {
   switch (accessory.type) {
     case "helmet":
@@ -73,8 +59,9 @@ const formatAccessoryType = (accessory: Accessory) => {
   }
 };
 
-export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
-  <PDFViewer style={{ width: "100%", height: "100vh" }}>
+// Fonction qui retourne un Blob PDF
+export async function generateRentalContractPdf(data: RentalData) {
+  const doc = (
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.title}>Contrat de location de vélo</Text>
@@ -94,7 +81,7 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
         <Text style={styles.row}>Pièce d'identité présentée: Oui</Text>
 
         <Text style={styles.sectionTitle}>Informations du matériel loué</Text>
-        {data.bikes.length > 0 && (
+        {data.bikes?.length > 0 && (
           <View style={{ marginBottom: 8 }}>
             <Text>Vélos:</Text>
             {data.bikes.map((b, i) => (
@@ -104,13 +91,13 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
             ))}
           </View>
         )}
-        {data.accessories.length > 0 && (
+        {data.accessories?.length > 0 && (
           <View style={{ marginBottom: 8 }}>
             <Text>Accessoires:</Text>
             {data.accessories.map((a, i) => (
               <Text key={i}>
                 {a.other
-                  ? `- ${a.other} `
+                  ? `- ${a.other}`
                   : `- ${a.quantity} x ${formatAccessoryType(a)}`}
               </Text>
             ))}
@@ -121,7 +108,6 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
         <Text style={styles.row}>{formatDate(data.startDateTime, true)}</Text>
 
         <Text style={styles.sectionTitle}>Conditions</Text>
-        {/* Ici tu peux afficher les conditions (acceptTerms etc.) si tu veux */}
         <Text style={styles.row}>
           Acceptation des termes: {data.acceptTerms ? "Oui" : "Non"}
         </Text>
@@ -139,5 +125,7 @@ export const RentalContractPdf: React.FC<{ data: RentalData }> = ({ data }) => (
         )}
       </Page>
     </Document>
-  </PDFViewer>
-);
+  );
+
+  return pdf(doc).toBlob();
+}
