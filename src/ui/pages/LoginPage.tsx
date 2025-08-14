@@ -29,7 +29,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
       {/* Bouton retour */}
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
         className="mb-6 self-start rounded bg-gray-300 px-4 py-2 hover:bg-gray-400"
       >
         ← Retour
