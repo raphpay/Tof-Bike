@@ -1,9 +1,9 @@
 import PhoneInput from "react-phone-number-input/input";
 import SignatureCanvas from "react-signature-canvas";
-import { useRentalForm } from "../../business-logic/hooks/useRentalForm";
-import Button from "../components/Button";
-import LabelInput from "../components/LabelInput";
-import SuccessPage from "./SuccessPage";
+import Button from "../../components/Button";
+import LabelInput from "../../components/LabelInput";
+import SuccessPage from "../SuccessPage";
+import { useBikeRentalForm } from "./useBikeRentalForm";
 
 export default function BikeRentalForm() {
   const {
@@ -30,7 +30,7 @@ export default function BikeRentalForm() {
     removeAccessory,
     setIsSignatureEmpty,
     handleChange,
-  } = useRentalForm();
+  } = useBikeRentalForm();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import type Accessory from "../../business-logic/models/Accessory";
-import type Bike from "../../business-logic/models/Bike";
-import type RentalCondition from "../../business-logic/models/RentalCondition";
-import { RentalConditionsService } from "../services/RentalConditionsService";
+import type Accessory from "../../../business-logic/models/Accessory";
+import type Bike from "../../../business-logic/models/Bike";
+import type RentalCondition from "../../../business-logic/models/RentalCondition";
+import { RentalConditionsService } from "../../../business-logic/services/RentalConditionsService";
 
-export function useRentalConditions() {
+export function useAdminPage() {
   const [data, setData] = useState<RentalCondition[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchName, setSearchName] = useState("");

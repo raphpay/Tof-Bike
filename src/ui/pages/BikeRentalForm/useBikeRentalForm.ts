@@ -3,11 +3,11 @@ import type { E164Number } from "libphonenumber-js";
 import { useRef, useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import type SignatureCanvas from "react-signature-canvas";
-import type RentalCondition from "../models/RentalCondition";
-import { RentalConditionsService } from "../services/RentalConditionsService";
-import { SupabaseService } from "../services/SupabaseService";
+import type RentalCondition from "../../../business-logic/models/RentalCondition";
+import { RentalConditionsService } from "../../../business-logic/services/RentalConditionsService";
+import { SupabaseService } from "../../../business-logic/services/SupabaseService";
 
-export function useRentalForm() {
+export function useBikeRentalForm() {
   const sigRef = useRef<SignatureCanvas>(null);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");

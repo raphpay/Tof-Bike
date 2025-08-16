@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useRentalConditions } from "../../business-logic/hooks/useRentalConditions";
-import Button from "../components/Button";
-import RentalNavBar from "../components/RentalNavBar";
+
+import { useAdminPage } from "./useAdminPage";
+
+import Button from "../../components/Button";
+import RentalNavBar from "../../components/RentalNavBar";
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function AdminPage() {
     setFilterDate,
     formatBikeType,
     formatAccessoryType,
-  } = useRentalConditions();
+  } = useAdminPage();
 
   return (
     <div>
