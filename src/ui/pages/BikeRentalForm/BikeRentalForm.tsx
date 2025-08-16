@@ -42,7 +42,7 @@ export default function BikeRentalForm() {
           className="mx-auto w-full max-w-md space-y-6 rounded-2xl bg-white p-4 shadow-md sm:p-6"
         >
           <h2 className="text-center text-xl font-bold sm:text-2xl">
-            Réservation de Vélo
+            Mes Informations pour la location
           </h2>
 
           {/* Nom */}
