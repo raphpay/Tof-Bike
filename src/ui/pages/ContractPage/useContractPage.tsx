@@ -1,12 +1,12 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type RentalData from "../../business-logic/models/RentalData";
-import SupabaseService from "../../business-logic/services/SupabaseService";
-import { db } from "../../config/firebase";
-import { generateRentalContractPdf } from "../components/RentalContractPDF";
+import type RentalData from "../../../business-logic/models/RentalData";
+import { SupabaseService } from "../../../business-logic/services/SupabaseService";
+import { db } from "../../../config/firebase";
+import { generateRentalContractPdf } from "../../components/RentalContractPDF";
 
-export default function ContractPage() {
+export function useContractPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -54,9 +54,8 @@ export default function ContractPage() {
       if (!docSnap.exists()) return;
 
       const data = docSnap.data();
-      const signedUrl = await SupabaseService.instance.getSignedUrl(
-        data.signatureFilename,
-      );
+      const service = new SupabaseService();
+      const signedUrl = await service.getSignedUrl(data.signatureFilename);
 
       let signatureBase64: string | undefined = undefined;
       if (signedUrl) {
@@ -83,6 +82,5 @@ export default function ContractPage() {
     fetchData();
   }, [id]);
 
-  if (loading) return <p>Chargement...</p>;
-  return null; // on n'affiche rien, car le PDF s'ouvre directement
+  return { loading };
 }
