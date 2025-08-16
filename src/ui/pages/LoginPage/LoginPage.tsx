@@ -1,35 +1,23 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLoginPage } from "./useLoginPage";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const auth = getAuth();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Connexion réussie, redirige où tu veux
-      navigate("/admin"); // exemple, adapte à ta route admin
-    } catch (err: any) {
-      setError(err.message || "Erreur de connexion");
-      setLoading(false);
-    }
-  };
+  const {
+    email,
+    password,
+    error,
+    loading,
+    setEmail,
+    setPassword,
+    handleSubmit,
+  } = useLoginPage();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
       {/* Bouton retour */}
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/")}
         className="mb-6 self-start rounded bg-gray-300 px-4 py-2 hover:bg-gray-400"
       >
         ← Retour
