@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export class FirestoreService {
@@ -8,6 +8,12 @@ export class FirestoreService {
     this.collectionName = collectionName;
   }
 
+  // CREATE
+  async addDocument(data: any): Promise<void> {
+    await addDoc(collection(db, this.collectionName), data);
+  }
+
+  // READ
   async getDocument<T>(id: string): Promise<T | null> {
     const docRef = doc(db, this.collectionName, id);
     const snapshot = await getDoc(docRef);

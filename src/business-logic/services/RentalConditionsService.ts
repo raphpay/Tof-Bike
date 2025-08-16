@@ -4,6 +4,19 @@ import { FirestoreService } from "./FirestoreService";
 export class RentalConditionsService {
   constructor() {}
 
+  // CREATE
+  async addRentalCondition(condition: RentalCondition): Promise<void> {
+    const service = new FirestoreService("rental-conditions");
+    try {
+      await service.addDocument(condition);
+    } catch (error) {
+      throw new Error(
+        "Erreur lors de l'ajout des conditions de location : " + error,
+      );
+    }
+  }
+
+  // READ
   async getRentalConditions(): Promise<RentalCondition[]> {
     const service = new FirestoreService("rental-conditions");
     try {
