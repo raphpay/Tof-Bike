@@ -1,6 +1,6 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthService } from "../../../business-logic/services/AuthService";
 
 export function useLoginPage() {
   const [email, setEmail] = useState("");
@@ -9,16 +9,14 @@ export function useLoginPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const auth = getAuth();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Connexion réussie, redirige où tu veux
-      navigate("/admin"); // exemple, adapte à ta route admin
+      const authService = new AuthService();
+      await authService.login(email, password);
+      navigate("/admin");
     } catch (err: any) {
       setError(err.message || "Erreur de connexion");
       setLoading(false);
