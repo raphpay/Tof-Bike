@@ -9,7 +9,7 @@ export default function HomeRental() {
       <RentalNavBar />
       <div className="flex min-h-screen w-screen flex-col items-center justify-center gap-2">
         <Button
-          title="Je réserve un vélo"
+          title="Je m'enregistre pour la location"
           onClick={() => navigate("formulaire-location")}
         />
         <Button

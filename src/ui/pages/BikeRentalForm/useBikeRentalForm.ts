@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import type { E164Number } from "libphonenumber-js";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import type SignatureCanvas from "react-signature-canvas";
 import type RentalCondition from "../../../business-logic/models/RentalCondition";
@@ -17,6 +17,7 @@ export function useBikeRentalForm() {
   const [isSendingInfos, setIsSendingInfos] = useState<boolean>(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({ email: "", phone: "" });
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const [formData, setFormData] = useState({
     acceptTerms: false,
@@ -208,6 +209,10 @@ export function useBikeRentalForm() {
     return fileName;
   }
 
+  useEffect(() => {
+    setShowAlert(true);
+  }, []);
+
   return {
     sigRef,
     firstName,
@@ -219,6 +224,7 @@ export function useBikeRentalForm() {
     formData,
     isButtonDisabled,
     isSendingInfos,
+    showAlert,
     setFirstName,
     setLastName,
     setEmail,
@@ -232,5 +238,6 @@ export function useBikeRentalForm() {
     removeAccessory,
     setIsSignatureEmpty,
     handleChange,
+    setShowAlert,
   };
 }
