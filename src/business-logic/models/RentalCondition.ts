@@ -1,15 +1,17 @@
 import type { Timestamp } from "firebase/firestore";
+import type Accessory from "./Accessory";
+import type Bike from "./Bike";
 
 export default interface RentalCondition {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   acceptTerms: boolean;
   acceptPrivacy: boolean;
-  bikes: { quantity: number; type: string }[];
-  accessories: { quantity: number; type: string; other?: string }[];
+  bikes: Bike[];
+  accessories: Accessory[];
   startDateTime: Timestamp;
   createdAt: Timestamp;
   signatureFilename: string;
