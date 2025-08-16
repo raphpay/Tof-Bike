@@ -5,7 +5,7 @@ import AdminPage from "./ui/pages/AdminPage/AdminPage";
 import BikeRentalForm from "./ui/pages/BikeRentalForm/BikeRentalForm";
 import ContractPage from "./ui/pages/ContractPage/ContractPage";
 import HomeRental from "./ui/pages/HomeRental";
-import LoginPage from "./ui/pages/LoginPage";
+import LoginPage from "./ui/pages/LoginPage/LoginPage";
 
 const AppContent: React.FC = () => {
   return (
