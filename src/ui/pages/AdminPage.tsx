@@ -1,83 +1,21 @@
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type Accessory from "../../business-logic/models/Accessory";
-import type Bike from "../../business-logic/models/Bike";
-import type RentalCondition from "../../business-logic/models/RentalCondition";
-import { db } from "../../config/firebase";
+import { useRentalConditions } from "../../business-logic/hooks/useRentalConditions";
 import Button from "../components/Button";
 import RentalNavBar from "../components/RentalNavBar";
 
 export default function AdminPage() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState<RentalCondition[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchName, setSearchName] = useState("");
-  const [filterDate, setFilterDate] = useState<string>(""); // date ISO yyyy-mm-dd
-
-  // Chargement des données Firestore
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const colRef = collection(db, "rental-conditions");
-      const snapshot = await getDocs(colRef);
-      const docsData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<RentalCondition, "id">),
-      }));
-      setData(docsData);
-    } catch (error) {
-      console.error("Erreur chargement données:", error);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // Filtrage local par nom + date
-  const filteredData = data.filter((item) => {
-    const fullName = `${item.firstName} ${item.lastName}`.toLowerCase();
-    const matchesName = fullName.includes(searchName.toLowerCase());
-
-    let matchesDate = true;
-    if (filterDate) {
-      const filterTimestampStart = new Date(filterDate);
-      filterTimestampStart.setHours(0, 0, 0, 0);
-      const filterTimestampEnd = new Date(filterDate);
-      filterTimestampEnd.setHours(23, 59, 59, 999);
-
-      const startDateTime = item.startDateTime.toDate();
-
-      matchesDate =
-        startDateTime >= filterTimestampStart &&
-        startDateTime <= filterTimestampEnd;
-    }
-
-    return matchesName && matchesDate;
-  });
-
-  const formatBikeType = (bike: Bike) => {
-    return bike.type === "electric" ? "Vélo électrique" : "Vélo classique";
-  };
-
-  const formatAccessoryType = (accessory: Accessory) => {
-    console.log("a", accessory);
-    switch (accessory.type) {
-      case "helmet":
-        return "Casque";
-      case "lock":
-        return "Antivol";
-      case "pump":
-        return "Pompe à vélo";
-      case "repairKit":
-        return "Kit de réparation";
-      default:
-        return accessory.other || "Accessoire inconnu";
-    }
-  };
+  const {
+    loading,
+    filteredData,
+    searchName,
+    filterDate,
+    setSearchName,
+    setFilterDate,
+    formatBikeType,
+    formatAccessoryType,
+  } = useRentalConditions();
 
   return (
     <div>
@@ -87,7 +25,7 @@ export default function AdminPage() {
           Admin - Locations
         </h1>
 
-        {/* Recherche */}
+        {/* Filtres */}
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
           <input
             type="text"
