@@ -28,7 +28,7 @@ const RentalNavBar = ({ showTitle = false }: Props) => {
   }
 
   return (
-    <nav className="bg-primary fixed top-0 left-0 z-50 w-full border-b border-gray-200 shadow-md backdrop-blur-md">
+    <nav className="bg-main fixed top-0 left-0 z-50 w-full border-b shadow-md shadow-black">
       <div className="mx-auto flex max-w-6xl flex-row items-center justify-between px-4 py-2">
         {/* LEFT SIDE */}
         <div className="flex-shrink-0">

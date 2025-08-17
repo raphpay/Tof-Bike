@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import GoogleLogo from "../../../public/icons8-google.svg";
 import { Button as NeoButton } from "../../components/ui/button";
+import RentalFooter from "../components/RentalFooter";
 import RentalNavBar from "../components/RentalNavBar";
 
 export default function HomeRental() {
@@ -9,9 +10,9 @@ export default function HomeRental() {
   function navigateToGoogle() {}
 
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <RentalNavBar />
-      <div className="flex min-h-screen w-screen flex-col items-center justify-center gap-2">
+      <main className="flex flex-1 flex-col items-center justify-center gap-2">
         <NeoButton onClick={() => navigate("formulaire-location")}>
           Je m'enregistre
         </NeoButton>
@@ -26,7 +27,8 @@ export default function HomeRental() {
             Laisser un avis
           </a>
         </NeoButton>
-      </div>
+      </main>
+      <RentalFooter />
     </div>
   );
 }
