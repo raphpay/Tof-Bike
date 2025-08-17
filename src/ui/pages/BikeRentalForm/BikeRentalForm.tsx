@@ -34,7 +34,7 @@ export default function BikeRentalForm() {
     formData,
     isButtonDisabled,
     isSendingInfos,
-    handleFirstNameChange,
+    setFirstName,
     handleSubmit,
     setLastName,
     setPhone,
@@ -96,7 +96,7 @@ export default function BikeRentalForm() {
             label="Prénom"
             value={firstName}
             name="firstname"
-            onChange={handleFirstNameChange}
+            onChange={(e) => setFirstName(e.target.value)}
             placeholder="Christophe"
           />
           <LabelInput

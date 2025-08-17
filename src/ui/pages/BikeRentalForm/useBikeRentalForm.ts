@@ -1,11 +1,13 @@
 import { Timestamp } from "firebase/firestore";
 import type { E164Number } from "libphonenumber-js";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import type SignatureCanvas from "react-signature-canvas";
 import type RentalCondition from "../../../business-logic/models/RentalCondition";
 import { RentalConditionsService } from "../../../business-logic/services/RentalConditionsService";
 import { SupabaseService } from "../../../business-logic/services/SupabaseService";
+
+type FormValue = string | boolean | Date | undefined;
 
 export function useBikeRentalForm() {
   const sigRef = useRef<SignatureCanvas>(null);
@@ -28,15 +30,6 @@ export function useBikeRentalForm() {
     createdAt: new Date(),
   });
 
-  // const isButtonDisabled =
-  //   !formData.acceptPrivacy ||
-  //   !formData.acceptTerms ||
-  //   !sigRef.current ||
-  //   isSignatureEmpty ||
-  //   !firstName ||
-  //   !lastName ||
-  //   !phone;
-
   const isButtonDisabled =
     !formData.acceptPrivacy ||
     !formData.acceptTerms ||
@@ -45,29 +38,6 @@ export function useBikeRentalForm() {
     !phone;
 
   // Local methods
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  // ) => {
-  //   const { name, value, type } = e.target;
-  //   let newValue: string | boolean = value;
-
-  //   if (type === "checkbox" && "checked" in e.target) {
-  //     newValue = (e.target as HTMLInputElement).checked;
-  //   }
-
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: newValue,
-  //   }));
-  // };
-
-  type FormValue = string | boolean | Date | undefined;
-
-  const handleFirstNameChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value),
-    [],
-  );
-
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -212,8 +182,8 @@ export function useBikeRentalForm() {
       email,
       phone: phone ?? "",
       signatureFilename: signatureFilename,
-      startDateTime: new Timestamp(startDateTime.getSeconds(), 0),
-      createdAt: new Timestamp(new Date().getSeconds(), 0),
+      startDateTime: Timestamp.fromDate(startDateTime),
+      createdAt: Timestamp.fromDate(new Date()),
     };
 
     const service = new RentalConditionsService();
@@ -279,6 +249,5 @@ export function useBikeRentalForm() {
     removeAccessory,
     handleChange,
     setShowAlert,
-    handleFirstNameChange,
   };
 }
