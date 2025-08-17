@@ -2,6 +2,7 @@ import { signOut } from "firebase/auth";
 import { LogOut, UserStar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/tof-bike-logo.png";
+import { Button as NeoButton } from "../../components/ui/button";
 import { auth } from "../../config/firebase";
 import { useAuth } from "../context/AuthContext";
 
@@ -40,12 +41,10 @@ const RentalNavBar = ({ showTitle = false }: Props) => {
         )}
 
         {/* RIGHT SIDE */}
-        <button
-          onClick={handleIconClick}
-          className="px-4 py-3 text-center text-white focus:ring-2 focus:ring-emerald-400 focus:outline-none"
-        >
+
+        <NeoButton onClick={handleIconClick}>
           {currentUser ? <LogOut color="black" /> : <UserStar color="black" />}
-        </button>
+        </NeoButton>
       </div>
     </nav>
   );
