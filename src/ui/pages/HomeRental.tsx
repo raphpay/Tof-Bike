@@ -3,6 +3,7 @@ import GoogleLogo from "../../../public/icons8-google.svg";
 import { Button as NeoButton } from "../../components/ui/button";
 import RentalFooter from "../components/RentalFooter";
 import RentalNavBar from "../components/RentalNavBar";
+import TypewriterTitle from "../components/TypewriterTitle";
 
 export default function HomeRental() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export default function HomeRental() {
     <div className="flex min-h-screen flex-col">
       <RentalNavBar />
       <main className="flex flex-1 flex-col items-center justify-center gap-2">
+        <TypewriterTitle />
+
         <NeoButton onClick={() => navigate("formulaire-location")}>
           Je m'enregistre
         </NeoButton>
