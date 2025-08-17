@@ -55,6 +55,7 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="motdepasse974"
           required
+          type="password"
         />
 
         {error && <p className="mb-4 text-center text-red-600">{error}</p>}
