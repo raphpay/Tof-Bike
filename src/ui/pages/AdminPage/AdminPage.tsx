@@ -24,7 +24,7 @@ export default function AdminPage() {
   return (
     <div>
       <RentalNavBar showTitle={true} />
-      <div className="bg-background mt-4 min-h-screen p-4">
+      <div className="bg-background mt-6 min-h-screen p-4">
         <h1 className="mb-6 text-center text-3xl font-bold">
           Admin - Locations
         </h1>
