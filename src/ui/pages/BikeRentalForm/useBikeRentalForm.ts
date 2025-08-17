@@ -13,8 +13,6 @@ export function useBikeRentalForm() {
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<E164Number | undefined>(undefined);
-  // ? To be removed
-  const [isSignatureEmpty, setIsSignatureEmpty] = useState<boolean>(true);
   const [isSendingInfos, setIsSendingInfos] = useState<boolean>(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({ email: "", phone: "" });
@@ -279,7 +277,6 @@ export function useBikeRentalForm() {
     addAccessory,
     updateAccessory,
     removeAccessory,
-    setIsSignatureEmpty,
     handleChange,
     setShowAlert,
     handleFirstNameChange,

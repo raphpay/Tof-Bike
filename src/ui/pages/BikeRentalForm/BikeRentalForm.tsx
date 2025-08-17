@@ -47,7 +47,6 @@ export default function BikeRentalForm() {
     updateAccessory,
     removeAccessory,
     handleChange,
-    setIsSignatureEmpty,
   } = useBikeRentalForm();
 
   const Alert = () => {
@@ -315,16 +314,12 @@ export default function BikeRentalForm() {
           <div>
             <label className="mb-1 block text-sm font-medium">Signature</label>
             <div className="bg-background border-[1.5px] border-black p-2">
-              <SignatureField
-                sigRef={sigRef}
-                setIsSignatureEmpty={setIsSignatureEmpty}
-              />
+              <SignatureField sigRef={sigRef} />
               <div className="mt-2 flex gap-2">
                 <NeoButton
                   type="button"
                   onClick={() => {
                     sigRef.current?.clear();
-                    setIsSignatureEmpty(true);
                   }}
                 >
                   Effacer
