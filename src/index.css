@@ -80,3 +80,17 @@
     @apply font-heading;
   }
 }
+
+@font-face {
+  font-family: "ArchivoBlack";
+  src:
+    local("ArchivoBlack-Regular"),
+    url("./assets/fonts/ArchivoBlack-Regular.ttf");
+}
+
+@font-face {
+  font-family: "ArchivoCondensed";
+  src:
+    local("Archivo_Condensed-Regular"),
+    url("./assets/fonts/Archivo_Condensed-Regular.ttf");
+}

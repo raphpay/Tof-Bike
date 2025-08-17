@@ -37,7 +37,10 @@ export default function RentalFooter() {
             </Button>
           ))}
         </div>
-        <div className="mt-2 text-center text-xs text-gray-400">
+        <div
+          className="mt-2 text-center text-xs text-gray-400"
+          style={{ fontFamily: "ArchivoCondensed" }}
+        >
           © Raphaël Payet 2025. All rights reserved.
         </div>
       </div>

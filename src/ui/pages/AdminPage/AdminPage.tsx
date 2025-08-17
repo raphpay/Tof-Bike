@@ -25,7 +25,10 @@ export default function AdminPage() {
     <div>
       <RentalNavBar showTitle={true} />
       <div className="bg-background mt-6 min-h-screen p-4">
-        <h1 className="mb-6 text-center text-3xl font-bold">
+        <h1
+          className="mb-6 text-center text-3xl font-bold"
+          style={{ fontFamily: "ArchivoBlack" }}
+        >
           Admin - Locations
         </h1>
 
@@ -64,39 +67,100 @@ export default function AdminPage() {
             <table className="min-w-full table-auto border-collapse text-left">
               <thead className="bg-main">
                 <tr>
-                  <th className="py- border px-4 text-center">Nom</th>
-                  <th className="border px-4 py-2 text-center">Email</th>
-                  <th className="border px-4 py-2 text-center">Téléphone</th>
-                  <th className="border px-4 py-2 text-center">Vélos</th>
-                  <th className="border px-4 py-2 text-center">Accessoires</th>
-                  <th className="border px-4 py-2 text-center">
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Nom
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Email
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Téléphone
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Vélos
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Accessoires
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
                     Début location
                   </th>
-                  <th className="border px-4 py-2 text-center">Créé le</th>
-                  <th className="border px-4 py-2 text-center">Actions</th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Créé le
+                  </th>
+                  <th
+                    className="border px-4 py-2 text-center"
+                    style={{ fontFamily: "ArchivoCondensed" }}
+                  >
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="border px-4 py-2 text-center">
+                    <td
+                      colSpan={8}
+                      className="border px-4 py-2 text-center"
+                      style={{ fontFamily: "ArchivoCondensed" }}
+                    >
                       Aucun résultat
                     </td>
                   </tr>
                 ) : (
                   filteredData.map((item) => (
                     <tr key={item.id} className="even:bg-gray-50">
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         {item.firstName} {item.lastName}
                       </td>
-                      <td className="border px-4 py-2">{item.email || "-"}</td>
-                      <td className="border px-4 py-2">{item.phone}</td>
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
+                        {item.email || "-"}
+                      </td>
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
+                        {item.phone}
+                      </td>
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         {item.bikes
                           .map((b) => `${b.quantity} x ${formatBikeType(b)}`)
                           .join(", ")}
                       </td>
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         {item.accessories
                           .map((a) =>
                             a.other
@@ -105,13 +169,22 @@ export default function AdminPage() {
                           )
                           .join(", ")}
                       </td>
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         {item.startDateTime.toDate().toLocaleString()}
                       </td>
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         {item.createdAt.toDate().toLocaleString()}
                       </td>
-                      <td className="border px-4 py-2">
+                      <td
+                        className="border px-4 py-2"
+                        style={{ fontFamily: "ArchivoCondensed" }}
+                      >
                         <NeoButton
                           onClick={() => navigate(`/admin/contract/${item.id}`)}
                         >

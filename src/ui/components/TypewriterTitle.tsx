@@ -24,7 +24,10 @@ export default function TypewriterTitle() {
   }, [index]);
 
   return (
-    <h2 className="px-4 pt-4 text-left text-xl leading-relaxed font-bold sm:text-2xl">
+    <h2
+      className="px-4 pt-4 text-left text-xl leading-relaxed font-bold sm:text-2xl"
+      style={{ fontFamily: "ArchivoBlack" }}
+    >
       {displayedText}
       <span className="animate-pulse">|</span>
     </h2>

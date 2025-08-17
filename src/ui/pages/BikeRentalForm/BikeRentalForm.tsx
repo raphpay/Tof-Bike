@@ -105,13 +105,21 @@ export default function BikeRentalForm() {
             onSubmit={handleSubmit}
             className="bg-background mx-auto mb-4 border-2 border-black px-2 py-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
-            <h2 className="text-left text-xl font-bold sm:text-2xl">
+            <h2
+              className="text-left text-xl font-bold sm:text-2xl"
+              style={{ fontFamily: "ArchivoBlack" }}
+            >
               Enregistrez vous,
             </h2>
-            <p>Partez en toute tranquilité</p>
+            <p style={{ fontFamily: "ArchivoCondensed" }}>
+              Partez en toute tranquilité
+            </p>
 
             <Separator className="mt-4" />
-            <h2 className="pt-2 text-left text-xl font-bold sm:text-2xl">
+            <h2
+              className="pt-2 text-left text-xl font-bold sm:text-2xl"
+              style={{ fontFamily: "ArchivoBlack" }}
+            >
               Vos informations
             </h2>
             {/* Nom */}
@@ -132,14 +140,17 @@ export default function BikeRentalForm() {
 
             {/* Téléphone */}
             <div>
-              <label className="block text-base font-bold">
+              <label
+                className="block text-base font-bold"
+                style={{ fontFamily: "ArchivoBlack" }}
+              >
                 Numéro de téléphone
               </label>
               <PhoneInput
                 value={phone}
                 onChange={setPhone}
                 placeholder="+262 692 12 34 56"
-                className="w-full border-[1.5px] border-black bg-white p-2"
+                className="w-full max-w-sm border-[1.5px] border-black bg-white p-2"
               />
               {errors.phone && <p className="text-red-600">{errors.phone}</p>}
             </div>
@@ -157,13 +168,21 @@ export default function BikeRentalForm() {
             />
 
             <Separator className="mt-4" />
-            <h2 className="pt-2 text-left text-xl font-bold sm:text-2xl">
+            <h2
+              className="pt-2 text-left text-xl font-bold sm:text-2xl"
+              style={{ fontFamily: "ArchivoBlack" }}
+            >
               Votre location
             </h2>
 
             {/* Vélos loué */}
             <div className="mt-2 mb-4">
-              <h3 className="mt-2 text-lg font-semibold">Vélos</h3>
+              <h3
+                className="mt-2 text-lg font-semibold"
+                style={{ fontFamily: "ArchivoCondensed" }}
+              >
+                Vélos
+              </h3>
 
               {formData.bikes.map((bike, index) => (
                 <div
@@ -177,6 +196,7 @@ export default function BikeRentalForm() {
                     onChange={(e) =>
                       updateBike(index, "quantity", e.target.value)
                     }
+                    style={{ fontFamily: "ArchivoBlack" }}
                   >
                     {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                       <option key={q} value={q}>
@@ -187,9 +207,10 @@ export default function BikeRentalForm() {
 
                   {/* Type */}
                   <select
-                    className="w-100 border p-2"
+                    className="w-full max-w-sm border p-2"
                     value={bike.type}
                     onChange={(e) => updateBike(index, "type", e.target.value)}
+                    style={{ fontFamily: "ArchivoBlack" }}
                   >
                     <option value="electric">Électrique</option>
                     <option value="classic">Classique</option>
@@ -217,7 +238,12 @@ export default function BikeRentalForm() {
 
             {/* Accessoires */}
             <div className="mt-2 mb-4">
-              <h3 className="mt-2 text-lg font-semibold">Accessoires</h3>
+              <h3
+                className="mt-2 text-lg font-semibold"
+                style={{ fontFamily: "ArchivoCondensed" }}
+              >
+                Accessoires
+              </h3>
 
               {formData.accessories.map((acc, index) => (
                 <div
@@ -231,6 +257,7 @@ export default function BikeRentalForm() {
                     onChange={(e) =>
                       updateAccessory(index, "quantity", e.target.value)
                     }
+                    style={{ fontFamily: "ArchivoBlack" }}
                   >
                     {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                       <option key={q} value={q}>
@@ -241,11 +268,12 @@ export default function BikeRentalForm() {
 
                   {/* Type */}
                   <select
-                    className="w-100 border p-2"
+                    className="w-full max-w-sm border p-2"
                     value={acc.type}
                     onChange={(e) =>
                       updateAccessory(index, "type", e.target.value)
                     }
+                    style={{ fontFamily: "ArchivoBlack" }}
                   >
                     <option value="antitheft-device">Antivol</option>
                     <option value="helmet">Casque</option>
@@ -273,7 +301,10 @@ export default function BikeRentalForm() {
             {/* Date/heure début */}
             <div className="space-y-2">
               <div className="space-y-2">
-                <label className="block text-base font-bold">
+                <label
+                  className="block text-base font-bold"
+                  style={{ fontFamily: "ArchivoCondensed" }}
+                >
                   Date de début
                 </label>
 
@@ -288,7 +319,10 @@ export default function BikeRentalForm() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-base font-bold">
+                <label
+                  className="block text-base font-bold"
+                  style={{ fontFamily: "ArchivoCondensed" }}
+                >
                   Heure de début
                 </label>
                 <TimePicker
@@ -309,7 +343,10 @@ export default function BikeRentalForm() {
                 onChange={handleChange}
                 required
               />
-              <label className="text-sm">
+              <label
+                className="text-sm"
+                style={{ fontFamily: "ArchivoCondensed" }}
+              >
                 En signant ce contrat, je déclare: <br /> - Avoir pris
                 connaissances des{" "}
                 <a
@@ -334,7 +371,10 @@ export default function BikeRentalForm() {
                 onChange={handleChange}
                 required
               />
-              <label className="text-sm">
+              <label
+                className="text-sm"
+                style={{ fontFamily: "ArchivoCondensed" }}
+              >
                 J'autorise le traitement de mes données dans le cadre de la
                 location.
               </label>
@@ -342,7 +382,10 @@ export default function BikeRentalForm() {
 
             {/* Signature */}
             <div>
-              <label className="mb-1 block text-sm font-medium">
+              <label
+                className="mb-1 block text-sm font-medium"
+                style={{ fontFamily: "ArchivoCondensed" }}
+              >
                 Signature
               </label>
               <div className="bg-background border-[1.5px] border-black p-2">

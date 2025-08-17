@@ -30,7 +30,11 @@ const LabelInput = memo(function LabelInput({
 
   return (
     <div>
-      <label htmlFor={name} className="block text-base font-bold">
+      <label
+        htmlFor={name}
+        className="block text-base font-bold"
+        style={{ fontFamily: "ArchivoBlack" }}
+      >
         {label}
       </label>
 
