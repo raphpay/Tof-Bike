@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import type { E164Number } from "libphonenumber-js";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import type SignatureCanvas from "react-signature-canvas";
 import type RentalCondition from "../../../business-logic/models/RentalCondition";
@@ -13,6 +13,7 @@ export function useBikeRentalForm() {
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<E164Number | undefined>(undefined);
+  // ? To be removed
   const [isSignatureEmpty, setIsSignatureEmpty] = useState<boolean>(true);
   const [isSendingInfos, setIsSendingInfos] = useState<boolean>(false);
   const [success, setSuccess] = useState(false);
@@ -29,30 +30,72 @@ export function useBikeRentalForm() {
     createdAt: new Date(),
   });
 
+  // const isButtonDisabled =
+  //   !formData.acceptPrivacy ||
+  //   !formData.acceptTerms ||
+  //   !sigRef.current ||
+  //   isSignatureEmpty ||
+  //   !firstName ||
+  //   !lastName ||
+  //   !phone;
+
   const isButtonDisabled =
     !formData.acceptPrivacy ||
     !formData.acceptTerms ||
-    !sigRef.current ||
-    isSignatureEmpty ||
     !firstName ||
     !lastName ||
     !phone;
 
   // Local methods
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value, type } = e.target;
+  //   let newValue: string | boolean = value;
+
+  //   if (type === "checkbox" && "checked" in e.target) {
+  //     newValue = (e.target as HTMLInputElement).checked;
+  //   }
+
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: newValue,
+  //   }));
+  // };
+
+  type FormValue = string | boolean | Date | undefined;
+
+  const handleFirstNameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value),
+    [],
+  );
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      | Date
+      | undefined,
+    name?: string,
   ) => {
-    const { name, value, type } = e.target;
-    let newValue: string | boolean = value;
+    if (e instanceof Date || e === undefined) {
+      // Cas spécial DatePicker
+      setFormData((prev) => ({
+        ...prev,
+        [name!]: e ? e.toISOString().split("T")[0] : "",
+      }));
+    } else {
+      const { name, value, type } = e.target;
+      let newValue: FormValue = value;
 
-    if (type === "checkbox" && "checked" in e.target) {
-      newValue = (e.target as HTMLInputElement).checked;
+      if (type === "checkbox" && "checked" in e.target) {
+        newValue = (e.target as HTMLInputElement).checked;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
     }
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
   };
 
   const addBike = () => {
@@ -239,5 +282,6 @@ export function useBikeRentalForm() {
     setIsSignatureEmpty,
     handleChange,
     setShowAlert,
+    handleFirstNameChange,
   };
 }

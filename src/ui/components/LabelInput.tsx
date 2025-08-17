@@ -1,3 +1,6 @@
+import { memo } from "react";
+import { Input } from "../../components/ui/input";
+
 type Props = {
   label: string;
   value: string;
@@ -9,7 +12,7 @@ type Props = {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function LabelInput({
+const LabelInput = memo(function LabelInput({
   label,
   name,
   value,
@@ -21,19 +24,20 @@ export default function LabelInput({
 }: Props) {
   return (
     <div>
-      <label htmlFor={name} className="block text-base font-medium">
+      <label htmlFor={name} className="block text-base font-bold">
         {label}
       </label>
-      <input
+      <Input
         name={name}
         value={value}
         onChange={onChange}
         type={type}
         required={required}
-        className="w-full rounded-lg border border-gray-300 p-3 text-base focus:ring focus:ring-blue-300 focus:outline-none"
         placeholder={placeholder}
       />
       {error && <p className="text-red-500">{error}</p>}
     </div>
   );
-}
+});
+
+export default LabelInput;
