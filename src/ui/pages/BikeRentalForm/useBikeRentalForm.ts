@@ -7,13 +7,14 @@ import type RentalCondition from "../../../business-logic/models/RentalCondition
 import { RentalConditionsService } from "../../../business-logic/services/RentalConditionsService";
 import { SupabaseService } from "../../../business-logic/services/SupabaseService";
 
+type FormValue = string | boolean | Date | undefined;
+
 export function useBikeRentalForm() {
   const sigRef = useRef<SignatureCanvas>(null);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<E164Number | undefined>(undefined);
-  const [isSignatureEmpty, setIsSignatureEmpty] = useState<boolean>(true);
   const [isSendingInfos, setIsSendingInfos] = useState<boolean>(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({ email: "", phone: "" });
@@ -32,27 +33,37 @@ export function useBikeRentalForm() {
   const isButtonDisabled =
     !formData.acceptPrivacy ||
     !formData.acceptTerms ||
-    !sigRef.current ||
-    isSignatureEmpty ||
     !firstName ||
     !lastName ||
     !phone;
 
   // Local methods
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      | Date
+      | undefined,
+    name?: string,
   ) => {
-    const { name, value, type } = e.target;
-    let newValue: string | boolean = value;
+    if (e instanceof Date || e === undefined) {
+      // Cas spécial DatePicker
+      setFormData((prev) => ({
+        ...prev,
+        [name!]: e ? e.toISOString().split("T")[0] : "",
+      }));
+    } else {
+      const { name, value, type } = e.target;
+      let newValue: FormValue = value;
 
-    if (type === "checkbox" && "checked" in e.target) {
-      newValue = (e.target as HTMLInputElement).checked;
+      if (type === "checkbox" && "checked" in e.target) {
+        newValue = (e.target as HTMLInputElement).checked;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
     }
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
   };
 
   const addBike = () => {
@@ -171,8 +182,8 @@ export function useBikeRentalForm() {
       email,
       phone: phone ?? "",
       signatureFilename: signatureFilename,
-      startDateTime: new Timestamp(startDateTime.getSeconds(), 0),
-      createdAt: new Timestamp(new Date().getSeconds(), 0),
+      startDateTime: Timestamp.fromDate(startDateTime),
+      createdAt: Timestamp.fromDate(new Date()),
     };
 
     const service = new RentalConditionsService();
@@ -236,7 +247,6 @@ export function useBikeRentalForm() {
     addAccessory,
     updateAccessory,
     removeAccessory,
-    setIsSignatureEmpty,
     handleChange,
     setShowAlert,
   };
