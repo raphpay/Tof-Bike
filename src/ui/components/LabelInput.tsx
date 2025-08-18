@@ -33,7 +33,7 @@ const LabelInput = memo(function LabelInput({
       <label
         htmlFor={name}
         className="block text-base font-bold"
-        style={{ fontFamily: "ArchivoBlack" }}
+        style={{ fontFamily: "PublicSans" }}
       >
         {label}
       </label>

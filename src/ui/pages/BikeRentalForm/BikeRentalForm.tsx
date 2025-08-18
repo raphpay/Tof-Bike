@@ -107,18 +107,18 @@ export default function BikeRentalForm() {
           >
             <h2
               className="text-left text-xl font-bold sm:text-2xl"
-              style={{ fontFamily: "ArchivoBlack" }}
+              style={{ fontFamily: "PublicSans" }}
             >
               Enregistrez vous,
             </h2>
-            <p style={{ fontFamily: "ArchivoCondensed" }}>
+            <p style={{ fontFamily: "PublicSans" }}>
               Partez en toute tranquilité
             </p>
 
             <Separator className="mt-4" />
             <h2
               className="pt-2 text-left text-xl font-bold sm:text-2xl"
-              style={{ fontFamily: "ArchivoBlack" }}
+              style={{ fontFamily: "PublicSans" }}
             >
               Vos informations
             </h2>
@@ -142,7 +142,7 @@ export default function BikeRentalForm() {
             <div>
               <label
                 className="block text-base font-bold"
-                style={{ fontFamily: "ArchivoBlack" }}
+                style={{ fontFamily: "PublicSans" }}
               >
                 Numéro de téléphone
               </label>
@@ -170,7 +170,7 @@ export default function BikeRentalForm() {
             <Separator className="mt-4" />
             <h2
               className="pt-2 text-left text-xl font-bold sm:text-2xl"
-              style={{ fontFamily: "ArchivoBlack" }}
+              style={{ fontFamily: "PublicSans" }}
             >
               Votre location
             </h2>
@@ -179,7 +179,7 @@ export default function BikeRentalForm() {
             <div className="mt-2 mb-4">
               <h3
                 className="mt-2 text-lg font-semibold"
-                style={{ fontFamily: "ArchivoCondensed" }}
+                style={{ fontFamily: "PublicSans" }}
               >
                 Vélos
               </h3>
@@ -196,7 +196,7 @@ export default function BikeRentalForm() {
                     onChange={(e) =>
                       updateBike(index, "quantity", e.target.value)
                     }
-                    style={{ fontFamily: "ArchivoBlack" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                       <option key={q} value={q}>
@@ -210,7 +210,7 @@ export default function BikeRentalForm() {
                     className="w-full max-w-sm border p-2"
                     value={bike.type}
                     onChange={(e) => updateBike(index, "type", e.target.value)}
-                    style={{ fontFamily: "ArchivoBlack" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     <option value="electric">Électrique</option>
                     <option value="classic">Classique</option>
@@ -240,7 +240,7 @@ export default function BikeRentalForm() {
             <div className="mt-2 mb-4">
               <h3
                 className="mt-2 text-lg font-semibold"
-                style={{ fontFamily: "ArchivoCondensed" }}
+                style={{ fontFamily: "PublicSans" }}
               >
                 Accessoires
               </h3>
@@ -257,7 +257,7 @@ export default function BikeRentalForm() {
                     onChange={(e) =>
                       updateAccessory(index, "quantity", e.target.value)
                     }
-                    style={{ fontFamily: "ArchivoBlack" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     {Array.from({ length: 20 }, (_, i) => i + 1).map((q) => (
                       <option key={q} value={q}>
@@ -273,7 +273,7 @@ export default function BikeRentalForm() {
                     onChange={(e) =>
                       updateAccessory(index, "type", e.target.value)
                     }
-                    style={{ fontFamily: "ArchivoBlack" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     <option value="antitheft-device">Antivol</option>
                     <option value="helmet">Casque</option>
@@ -303,7 +303,7 @@ export default function BikeRentalForm() {
               <div className="space-y-2">
                 <label
                   className="block text-base font-bold"
-                  style={{ fontFamily: "ArchivoCondensed" }}
+                  style={{ fontFamily: "PublicSans" }}
                 >
                   Date de début
                 </label>
@@ -321,7 +321,7 @@ export default function BikeRentalForm() {
               <div className="space-y-2">
                 <label
                   className="block text-base font-bold"
-                  style={{ fontFamily: "ArchivoCondensed" }}
+                  style={{ fontFamily: "PublicSans" }}
                 >
                   Heure de début
                 </label>
@@ -343,10 +343,7 @@ export default function BikeRentalForm() {
                 onChange={handleChange}
                 required
               />
-              <label
-                className="text-sm"
-                style={{ fontFamily: "ArchivoCondensed" }}
-              >
+              <label className="text-sm" style={{ fontFamily: "PublicSans" }}>
                 En signant ce contrat, je déclare: <br /> - Avoir pris
                 connaissances des{" "}
                 <a
@@ -371,10 +368,7 @@ export default function BikeRentalForm() {
                 onChange={handleChange}
                 required
               />
-              <label
-                className="text-sm"
-                style={{ fontFamily: "ArchivoCondensed" }}
-              >
+              <label className="text-sm" style={{ fontFamily: "PublicSans" }}>
                 J'autorise le traitement de mes données dans le cadre de la
                 location.
               </label>
@@ -384,7 +378,7 @@ export default function BikeRentalForm() {
             <div>
               <label
                 className="mb-1 block text-sm font-medium"
-                style={{ fontFamily: "ArchivoCondensed" }}
+                style={{ fontFamily: "PublicSans" }}
               >
                 Signature
               </label>

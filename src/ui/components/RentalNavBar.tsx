@@ -39,7 +39,7 @@ const RentalNavBar = ({ showTitle = false }: Props) => {
         {showTitle && (
           <h1
             className="text-center text-3xl font-bold"
-            style={{ fontFamily: "ArchivoBlack" }}
+            style={{ fontFamily: "PublicSans" }}
           >
             Admin - Locations
           </h1>

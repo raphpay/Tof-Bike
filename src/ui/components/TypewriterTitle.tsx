@@ -26,7 +26,7 @@ export default function TypewriterTitle() {
   return (
     <h2
       className="px-4 pt-4 text-left text-xl leading-relaxed font-bold sm:text-2xl"
-      style={{ fontFamily: "ArchivoBlack" }}
+      style={{ fontFamily: "ArchiPublicSansvoBlack" }}
     >
       {displayedText}
       <span className="animate-pulse">|</span>

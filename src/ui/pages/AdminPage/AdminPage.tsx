@@ -27,7 +27,7 @@ export default function AdminPage() {
       <div className="bg-background mt-6 min-h-screen p-4">
         <h1
           className="mb-6 text-center text-3xl font-bold"
-          style={{ fontFamily: "ArchivoBlack" }}
+          style={{ fontFamily: "PublicSans" }}
         >
           Admin - Locations
         </h1>
@@ -69,49 +69,49 @@ export default function AdminPage() {
                 <tr>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Nom
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Email
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Téléphone
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Vélos
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Accessoires
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Début location
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Créé le
                   </th>
                   <th
                     className="border px-4 py-2 text-center"
-                    style={{ fontFamily: "ArchivoCondensed" }}
+                    style={{ fontFamily: "PublicSans" }}
                   >
                     Actions
                   </th>
@@ -123,7 +123,7 @@ export default function AdminPage() {
                     <td
                       colSpan={8}
                       className="border px-4 py-2 text-center"
-                      style={{ fontFamily: "ArchivoCondensed" }}
+                      style={{ fontFamily: "PublicSans" }}
                     >
                       Aucun résultat
                     </td>
@@ -133,25 +133,25 @@ export default function AdminPage() {
                     <tr key={item.id} className="even:bg-gray-50">
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.firstName} {item.lastName}
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.email || "-"}
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.phone}
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.bikes
                           .map((b) => `${b.quantity} x ${formatBikeType(b)}`)
@@ -159,7 +159,7 @@ export default function AdminPage() {
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.accessories
                           .map((a) =>
@@ -171,19 +171,19 @@ export default function AdminPage() {
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.startDateTime.toDate().toLocaleString()}
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         {item.createdAt.toDate().toLocaleString()}
                       </td>
                       <td
                         className="border px-4 py-2"
-                        style={{ fontFamily: "ArchivoCondensed" }}
+                        style={{ fontFamily: "PublicSans" }}
                       >
                         <NeoButton
                           onClick={() => navigate(`/admin/contract/${item.id}`)}

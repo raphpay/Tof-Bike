@@ -82,15 +82,7 @@
 }
 
 @font-face {
-  font-family: "ArchivoBlack";
+  font-family: "PublicSans";
   src:
-    local("ArchivoBlack-Regular"),
-    url("./assets/fonts/ArchivoBlack-Regular.ttf");
-}
-
-@font-face {
-  font-family: "ArchivoCondensed";
-  src:
-    local("Archivo_Condensed-Regular"),
-    url("./assets/fonts/Archivo_Condensed-Regular.ttf");
+    local("PublicSans"), url("./assets/fonts/PublicSans-VariableFont_wght.ttf");
 }
