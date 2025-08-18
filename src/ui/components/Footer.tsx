@@ -21,9 +21,9 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-emerald-950 text-white py-8 px-4 mt-12 border-t border-emerald-800 dark:bg-emerald-800 dark:border-emerald-950">
-      <div className="max-w-4xl mx-auto flex flex-col items-center">
-        <div className="flex flex-wrap justify-center gap-8 mb-4">
+    <footer className="mt-2 mt-12 w-full border-t border-emerald-800 bg-emerald-950 px-4 text-white dark:border-emerald-950 dark:bg-emerald-800">
+      <div className="mx-auto flex max-w-4xl flex-col items-center">
+        <div className="mb-4 flex flex-wrap justify-center gap-8">
           {socialLinks.map((link) => (
             <motion.a
               key={link.label}
@@ -31,17 +31,17 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={link.label}
-              className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-800 hover:bg-emerald-500 transition-colors duration-200 shadow-md group dark:bg-emerald-950 dark:hover:bg-emerald-800"
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-emerald-800 shadow-md transition-colors duration-200 hover:bg-emerald-500 dark:bg-emerald-950 dark:hover:bg-emerald-800"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.97 }}
             >
-              <span className="text-emerald-100 group-hover:text-sky-100 transition-colors duration-200 dark:text-sky-100 dark:group-hover:text-emerald-100">
+              <span className="text-emerald-100 transition-colors duration-200 group-hover:text-sky-100 dark:text-sky-100 dark:group-hover:text-emerald-100">
                 {link.icon}
               </span>
             </motion.a>
           ))}
         </div>
-        <div className="text-xs text-gray-400 text-center mt-2">
+        <div className="mt-2 text-center text-xs text-gray-400">
           © Raphaël Payet 2025. All rights reserved.
         </div>
       </div>
